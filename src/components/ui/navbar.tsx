@@ -46,9 +46,11 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
+          {/* Desktop Theme Toggle & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             
             {/* Mobile menu button */}
             <button
@@ -79,6 +81,11 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              
+              {/* Mobile Theme Toggle */}
+              <div className="flex justify-center pt-2 pb-1">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         )}
