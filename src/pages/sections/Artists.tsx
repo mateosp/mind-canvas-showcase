@@ -5,6 +5,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, User, Palette, Star, ExternalLink } from "lucide-react"
+import InteractiveMap from "@/components/InteractiveMap"
+import { artistsData } from "@/data/mapData"
 
 export default function Artists() {
   const featuredArtists = [
@@ -68,27 +70,12 @@ export default function Artists() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Mapa Interactivo LATAM</h2>
+            <h2 className="text-4xl font-bold mb-4">Mapa Interactivo de Colombia</h2>
             <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-            <p className="text-muted-foreground mt-6">
-              Explora artistas por ubicación geográfica
-            </p>
+            <p className="text-muted-foreground mt-4">Descubre artistas por toda Colombia</p>
           </div>
           
-          <Card className="border-none shadow-artistic">
-            <CardContent className="p-0">
-              <div className="h-96 bg-gradient-accent rounded-lg flex items-center justify-center">
-                <div className="text-center text-white space-y-4">
-                  <MapPin className="h-16 w-16 mx-auto" />
-                  <h3 className="text-2xl font-bold">Mapa Interactivo</h3>
-                  <p className="text-lg opacity-90">América Latina - Artistas por Región</p>
-                  <Button variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm mt-4">
-                    Explorar Mapa <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <InteractiveMap type="artists" data={artistsData} />
         </div>
       </section>
 
