@@ -15,16 +15,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 200 45% 55%;
+    --primary: 200 65% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 80 20% 95%;
-    --secondary-foreground: 80 20% 20%;
+    --secondary: 80 40% 85%;
+    --secondary-foreground: 80 30% 25%;
 
-    --muted: 210 25% 96%;
-    --muted-foreground: 210 15% 45%;
+    --muted: 210 35% 94%;
+    --muted-foreground: 210 25% 40%;
 
-    --accent: 140 30% 70%;
+    --accent: 140 50% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,14 +34,20 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 180 100% 40%;
 
-    /* Soft nature-inspired gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 98%), hsl(140 25% 95%), hsl(200 30% 96%));
-    --gradient-card: linear-gradient(135deg, hsl(140 20% 92%), hsl(200 25% 90%));
-    --gradient-accent: linear-gradient(45deg, hsl(30 25% 90%), hsl(140 20% 92%));
+    /* Soft rainbow gradients */
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(340 50% 85%), 
+      hsl(20 55% 85%), 
+      hsl(45 60% 85%), 
+      hsl(140 50% 85%), 
+      hsl(200 55% 85%), 
+      hsl(260 50% 85%));
+    --gradient-card: linear-gradient(135deg, hsl(140 40% 88%), hsl(200 45% 86%));
+    --gradient-accent: linear-gradient(45deg, hsl(30 45% 88%), hsl(140 40% 88%));
     
-    /* Soft shadows with color tints */
-    --shadow-artistic: 0 20px 60px -10px hsl(200 30% 60% / 0.15);
-    --shadow-card: 0 10px 30px -5px hsl(140 20% 40% / 0.1);
+    /* Colorful shadows */
+    --shadow-artistic: 0 20px 60px -10px hsl(200 50% 70% / 0.25);
+    --shadow-card: 0 10px 30px -5px hsl(140 40% 60% / 0.15);
     
     /* Animation variables */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,16 +82,16 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 200 40% 65%;
+    --primary: 200 60% 70%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 15% 15%;
-    --secondary-foreground: 30 10% 90%;
+    --secondary: 30 25% 20%;
+    --secondary-foreground: 30 15% 85%;
 
-    --muted: 210 15% 12%;
-    --muted-foreground: 210 15% 70%;
+    --muted: 210 20% 16%;
+    --muted-foreground: 210 20% 65%;
 
-    --accent: 140 25% 65%;
+    --accent: 140 45% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -95,10 +101,16 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 180 100% 50%;
 
-    /* Dark mode nature gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(210 15% 8%), hsl(140 15% 12%), hsl(200 20% 10%));
-    --gradient-card: linear-gradient(135deg, hsl(140 15% 15%), hsl(200 20% 18%));
-    --gradient-accent: linear-gradient(45deg, hsl(30 20% 15%), hsl(140 15% 18%));
+    /* Dark mode colorful gradients */
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(340 40% 25%), 
+      hsl(20 45% 30%), 
+      hsl(45 50% 35%), 
+      hsl(140 40% 30%), 
+      hsl(200 45% 25%), 
+      hsl(260 40% 30%));
+    --gradient-card: linear-gradient(135deg, hsl(140 30% 20%), hsl(200 35% 22%));
+    --gradient-accent: linear-gradient(45deg, hsl(30 35% 20%), hsl(140 30% 22%));
     
     --shadow-artistic: 0 20px 60px -10px hsl(180 100% 50% / 0.4);
     --shadow-card: 0 10px 30px -5px hsl(0 0% 0% / 0.3);
