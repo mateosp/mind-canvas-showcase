@@ -5,6 +5,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { FileText, Newspaper, PenTool, MessageSquare } from "lucide-react"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { OpinionCard } from "@/components/OpinionCard"
+import { pressOpinions, columnOpinions } from "@/data/opinionData"
 
 export default function Opinion() {
   return (
@@ -63,6 +66,72 @@ export default function Opinion() {
                 </Badge>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Press Opinions Carousel */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Lo que dice la Prensa</h2>
+            <p className="text-xl text-muted-foreground mb-4">
+              Cobertura y críticas de los medios especializados
+            </p>
+            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="relative">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {pressOpinions.map((opinion) => (
+                  <CarouselItem key={opinion.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                    <OpinionCard opinion={opinion} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </Carousel>
+          </div>
+        </div>
+      </section>
+
+      {/* Column Opinions Carousel */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Opiniones de Expertos</h2>
+            <p className="text-xl text-muted-foreground mb-4">
+              Análisis especializado de críticos y teóricos del arte
+            </p>
+            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="relative">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {columnOpinions.map((opinion) => (
+                  <CarouselItem key={opinion.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                    <OpinionCard opinion={opinion} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </Carousel>
           </div>
         </div>
       </section>
