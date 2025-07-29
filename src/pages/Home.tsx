@@ -62,91 +62,104 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 text-center space-y-8 px-4">
-          <div className="space-y-4 animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-wider">
+      <section className="relative min-h-screen flex items-center justify-center bg-background text-foreground">
+        <div className="relative z-10 text-center space-y-12 px-4 max-w-4xl mx-auto">
+          <div className="space-y-6 animate-fade-in">
+            <h1 className="text-5xl md:text-7xl font-light tracking-wide text-foreground">
               OJOS DE ARTE
             </h1>
-            <p className="text-xl md:text-2xl font-light tracking-widest">
-              ARTE - IDENTIDAD - NARRATIVA
+            <p className="text-lg md:text-xl font-light text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Descubre y conecta con el arte latinoamericano a través de experiencias únicas que transforman la manera de ver y vivir el arte.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-scale-in">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-scale-in">
             <Link to="/sections">
-              <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
-                SECCIONES
+              <Button size="lg" variant="default" className="min-w-[200px] font-light">
+                Explorar Secciones
               </Button>
             </Link>
             <Link to="/about">
-              <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
-                OBTÉN MAS INFORMACIÓN
+              <Button size="lg" variant="outline" className="min-w-[200px] font-light">
+                Conoce Más
               </Button>
             </Link>
           </div>
         </div>
-        
-        {/* Floating elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse delay-1000"></div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 bg-background">
+      {/* About Section - Inspired by Yonobi "Our studios" */}
+      <section className="py-32 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Acerca de Ojos de arte</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-light mb-6 text-foreground">Nuestros servicios</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+              Conectamos artistas y amantes del arte a través de experiencias transformadoras en América Latina.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {aboutSections.map((section, index) => (
-              <Card key={index} className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+              <div key={index} className="group cursor-pointer">
+                <div className="aspect-[4/3] bg-gradient-card rounded-lg mb-6 overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center text-6xl text-white/80">
                     {section.icon}
                   </div>
-                  <h3 className="text-xl font-bold">{section.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-all duration-500"></div>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+                    {section.title}
+                  </h3>
+                  <p className="text-muted-foreground font-light leading-relaxed">
                     {section.description}
                   </p>
-                  <Button variant="ghost" size="sm" className="mt-4 group-hover:text-primary">
-                    Ver más <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
+                  <div className="pt-2">
+                    <span className="text-sm text-primary font-medium group-hover:underline">
+                      Conoce más
+                    </span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Available Sections */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-32 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">SECCIONES DISPONIBLES</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-light mb-6">Nuestras secciones</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+              Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {availableSections.map((section, index) => (
-              <Link key={index} to={section.href}>
-                <Card className="group overflow-hidden hover:shadow-artistic transition-all duration-500 hover:scale-[1.02] border-none bg-gradient-to-br from-card to-muted/50">
-                  <div className="relative h-64 bg-gradient-card flex items-center justify-center text-6xl">
-                    {section.image}
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+              <Link key={index} to={section.href} className="group block">
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden relative">
+                    <div className="absolute inset-0 flex items-center justify-center text-6xl">
+                      {section.image}
+                    </div>
+                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-all duration-500"></div>
                   </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
                       {section.title}
                     </h3>
-                    <p className="text-muted-foreground group-hover:text-foreground transition-colors">
+                    <p className="text-muted-foreground font-light leading-relaxed">
                       {section.description}
                     </p>
-                  </CardContent>
-                </Card>
+                    <div className="pt-2">
+                      <span className="text-sm text-primary font-medium group-hover:underline">
+                        Explorar sección
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
