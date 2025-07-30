@@ -1,12 +1,18 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Navbar } from "@/components/ui/navbar"
 import { Newsletter } from "@/components/ui/newsletter"
 import { Footer } from "@/components/ui/footer"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Users, Eye, Palette, MapPin, ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
+import { useScrollAnimation } from "@/hooks/useScrollAnimation"
 
 export default function Home() {
+  const aboutAnimation = useScrollAnimation();
+  const sectionsAnimation = useScrollAnimation();
+
   const aboutSections = [
     {
       icon: <Eye className="h-8 w-8" />,
@@ -64,16 +70,26 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero">
         <div className="relative z-10 text-center space-y-12 px-4 max-w-4xl mx-auto">
-          <div className="space-y-6 animate-fade-in">
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <h1 className="text-5xl md:text-7xl font-light tracking-wide text-foreground">
               OJOS DE ARTE
             </h1>
             <p className="text-lg md:text-xl font-light text-foreground/80 max-w-2xl mx-auto leading-relaxed">
               Descubre y conecta con el arte latinoamericano a través de experiencias únicas que transforman la manera de ver y vivir el arte.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-scale-in">
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
             <Link to="/sections">
               <Button size="lg" variant="default" className="min-w-[200px] font-light bg-primary hover:bg-primary/90 shadow-lg">
                 Explorar Secciones
@@ -84,7 +100,7 @@ export default function Home() {
                 Conoce Más
               </Button>
             </Link>
-          </div>
+          </motion.div>
         </div>
         
         {/* Colorful decorative elements */}
@@ -97,16 +113,28 @@ export default function Home() {
       {/* About Section - 4 columns */}
       <section className="py-32 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
+          <motion.div 
+            className="text-center mb-20"
+            ref={aboutAnimation.ref}
+            initial={{ opacity: 0, y: 50 }}
+            animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-3xl md:text-4xl font-light mb-6 text-foreground">Nuestros servicios</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Conectamos artistas y amantes del arte a través de experiencias transformadoras en América Latina.
             </p>
-          </div>
+          </motion.div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {aboutSections.map((section, index) => (
-              <div key={index} className="group cursor-pointer">
+              <motion.div 
+                key={index} 
+                className="group cursor-pointer"
+                initial={{ opacity: 0, y: 50 }}
+                animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
                 <div className="aspect-[4/3] bg-gradient-card rounded-lg mb-6 overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500">
                   <div className="absolute inset-0 flex items-center justify-center text-5xl text-primary/70">
                     {section.icon}
@@ -126,7 +154,7 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -135,38 +163,51 @@ export default function Home() {
       {/* Available Sections */}
       <section className="py-32 bg-gradient-accent">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
+          <motion.div 
+            className="text-center mb-20"
+            ref={sectionsAnimation.ref}
+            initial={{ opacity: 0, y: 50 }}
+            animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-3xl md:text-4xl font-light mb-6">Nuestras secciones</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
             </p>
-          </div>
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {availableSections.map((section, index) => (
-              <Link key={index} to={section.href} className="group block">
-                <div className="space-y-6">
-                  <div className="aspect-[4/3] bg-card rounded-lg overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500">
-                    <div className="absolute inset-0 flex items-center justify-center text-6xl">
-                      {section.image}
-                    </div>
-                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-all duration-500"></div>
-                  </div>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+              >
+                <Link to={section.href} className="group block">
                   <div className="space-y-3">
-                    <h3 className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
-                      {section.title}
-                    </h3>
-                    <p className="text-muted-foreground font-light leading-relaxed">
-                      {section.description}
-                    </p>
-                    <div className="pt-2">
-                      <span className="text-sm text-accent font-medium group-hover:underline">
-                        Explorar sección
-                      </span>
+                    <div className="aspect-[4/3] bg-card rounded-lg overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group-hover:scale-105 transform">
+                      <div className="absolute inset-0 flex items-center justify-center text-6xl">
+                        {section.image}
+                      </div>
+                      <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-all duration-500"></div>
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+                        {section.title}
+                      </h3>
+                      <p className="text-muted-foreground font-light leading-relaxed">
+                        {section.description}
+                      </p>
+                      <div className="pt-2">
+                        <span className="text-sm text-accent font-medium group-hover:underline">
+                          Explorar sección
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
