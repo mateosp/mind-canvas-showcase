@@ -148,15 +148,27 @@ export default function Home() {
                   <p className="text-muted-foreground font-light leading-relaxed text-sm">
                     {section.description}
                   </p>
-                  <div className="pt-2">
-                    <span className="text-xs text-accent font-medium group-hover:underline">
-                      Conoce más
-                    </span>
-                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
+          
+          {/* Botón centralizado */}
+          <motion.div 
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            <Link to="/about">
+              <Button 
+                size="lg" 
+                className="bg-accent hover:bg-accent/90 text-white font-medium px-12 py-3 h-auto"
+              >
+                Conoce más
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
