@@ -95,11 +95,18 @@ export default function Home() {
                 Explorar Secciones
               </Button>
             </Link>
-            <Link to="/about">
-              <Button size="lg" variant="outline" className="min-w-[200px] font-light border-foreground/30 hover:bg-foreground/10 backdrop-blur-sm">
-                Conoce Más
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="min-w-[200px] font-light border-foreground/30 hover:bg-foreground/10 backdrop-blur-sm"
+              onClick={() => {
+                document.getElementById('nuestros-servicios')?.scrollIntoView({ 
+                  behavior: 'smooth' 
+                });
+              }}
+            >
+              Conoce Más
+            </Button>
           </motion.div>
         </div>
         
@@ -111,7 +118,7 @@ export default function Home() {
       </section>
 
       {/* About Section - 4 columns */}
-      <section className="py-32 bg-background">
+      <section id="nuestros-servicios" className="py-32 bg-background">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-20"
