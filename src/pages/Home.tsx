@@ -90,11 +90,18 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <Link to="/sections">
-              <Button size="lg" variant="default" className="min-w-[200px] font-light bg-primary hover:bg-primary/90 shadow-lg">
-                Explorar Secciones
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              variant="default" 
+              className="min-w-[200px] font-light bg-primary hover:bg-primary/90 shadow-lg"
+              onClick={() => {
+                document.getElementById('nuestras-secciones')?.scrollIntoView({ 
+                  behavior: 'smooth' 
+                });
+              }}
+            >
+              Explorar Secciones
+            </Button>
             <Button 
               size="lg" 
               variant="outline" 
@@ -180,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Available Sections */}
-      <section className="py-32 bg-gradient-accent">
+      <section id="nuestras-secciones" className="py-32 bg-gradient-accent">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-20"
