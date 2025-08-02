@@ -32,6 +32,8 @@ export default function Museums() {
             allowFullScreen 
             allow="geolocation"
             className="w-full h-full"
+            loading="lazy"
+            title="Mapa de Museos en Colombia"
           ></iframe>
         </div>
       </section>
