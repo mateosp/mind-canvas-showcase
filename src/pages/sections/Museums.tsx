@@ -8,7 +8,7 @@ export default function Museums() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-hero text-white">
+      <section className="pt-24 pb-16 bg-muted/30 text-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
