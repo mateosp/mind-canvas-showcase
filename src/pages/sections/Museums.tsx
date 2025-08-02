@@ -1,12 +1,6 @@
 import { Navbar } from "@/components/ui/navbar"
 import { Newsletter } from "@/components/ui/newsletter"
 import { Footer } from "@/components/ui/footer"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { MapPin, Building, Calendar, ExternalLink, Star } from "lucide-react"
-import InteractiveMap from "@/components/InteractiveMap"
-import { museumsData } from "@/data/mapData"
 
 export default function Museums() {
   return (
@@ -27,16 +21,18 @@ export default function Museums() {
         </div>
       </section>
 
-      {/* Interactive Map */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Mapa Interactivo de Colombia</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-            <p className="text-muted-foreground mt-4">Explora museos y galerías por toda Colombia</p>
-          </div>
-          
-          <InteractiveMap type="museums" data={museumsData} />
+      {/* ArcGIS Map Section */}
+      <section className="py-30 bg-background">
+        <div className="w-[95%] h-[80vh] mx-auto museums-iframe">
+          <iframe 
+            src="https://storymaps.arcgis.com/stories/4a0bcac304d3492283e37cca2537b6cd?cover=false" 
+            width="100%" 
+            height="100%" 
+            frameBorder="0" 
+            allowFullScreen 
+            allow="geolocation"
+            className="w-full h-full"
+          ></iframe>
         </div>
       </section>
 
