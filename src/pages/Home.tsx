@@ -68,7 +68,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero">
+      <section className="relative min-h-screen flex items-center justify-center bg-white">
         <div className="relative z-10 text-center space-y-12 px-4 max-w-4xl mx-auto">
           <motion.div 
             className="space-y-6"
@@ -76,8 +76,8 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-light tracking-wide text-foreground">
-              OJOS DE ARTE
+            <h1 className="text-5xl md:text-7xl font-semibold tracking-wide text-foreground">
+              OJOS DE <span className="bg-gradient-hero bg-clip-text text-transparent">ARTE</span>
             </h1>
             <p className="text-lg md:text-xl font-light text-foreground/80 max-w-2xl mx-auto leading-relaxed">
               Descubre y conecta con el arte latinoamericano a través de experiencias únicas que transforman la manera de ver y vivir el arte.
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* About Section - 4 columns */}
-      <section id="nuestros-servicios" className="py-32 bg-background">
+      <section id="nuestros-servicios" className="py-32 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-20"
@@ -134,7 +134,7 @@ export default function Home() {
             animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-light mb-6 text-foreground">Nuestros servicios</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-foreground">Nuestros servicios</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Conectamos artistas y amantes del arte a través de experiencias transformadoras en América Latina.
             </p>
@@ -156,7 +156,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-white/40 group-hover:bg-white/20 transition-all duration-500"></div>
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                     {section.title}
                   </h3>
                   <p className="text-muted-foreground font-light leading-relaxed text-sm">
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Available Sections */}
-      <section id="nuestras-secciones" className="py-32 bg-gradient-accent">
+      <section id="nuestras-secciones" className="py-32 bg-white">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-20"
@@ -196,7 +196,7 @@ export default function Home() {
             animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-light mb-6">Nuestras secciones</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">Nuestras secciones</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
             </p>
@@ -219,7 +219,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-all duration-500"></div>
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {section.title}
                       </h3>
                       <p className="text-muted-foreground font-light leading-relaxed">
