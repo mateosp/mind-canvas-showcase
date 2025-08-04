@@ -10,6 +10,7 @@ import Artists from "./pages/sections/Artists";
 import Museums from "./pages/sections/Museums";
 import Events from "./pages/sections/Events";
 import Opinion from "./pages/sections/Opinion";
+import LoginNatalia02025 from "./pages/LoginNatalia02025";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<LoginNatalia02025 />} />
           <Route path="/sections/artists" element={<Artists />} />
           <Route path="/sections/museums" element={<Museums />} />
           <Route path="/sections/events" element={<Events />} />
