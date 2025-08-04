@@ -73,13 +73,13 @@ export default function Contact() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-hero text-white">
+      <section className="pt-24 pb-16 bg-white bg-gradient-hero bg-clip-text text-transparent">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
               Contacto
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in">
+            <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
               Estamos aquí para ayudarte en tu journey artístico
             </p>
           </div>
@@ -87,8 +87,14 @@ export default function Contact() {
       </section>
 
       {/* Contact Form and Info */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-white relative">
+        {/* Colorful decorative elements */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-secondary/30 to-accent/30 rounded-full blur-xl animate-pulse delay-500"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-gradient-to-br from-accent/25 to-secondary/25 rounded-full blur-xl animate-pulse delay-700"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Contact Form */}
             <div className="space-y-8">
@@ -208,19 +214,6 @@ export default function Contact() {
                   </Card>
                 ))}
               </div>
-              
-              {/* Map placeholder */}
-              <Card className="border-none shadow-card-elegant">
-                <CardContent className="p-0">
-                  <div className="h-64 bg-gradient-accent rounded-lg flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <MapPin className="h-12 w-12 mx-auto mb-4" />
-                      <p className="text-lg font-medium">Mapa interactivo</p>
-                      <p className="text-sm opacity-80">Ciudad de México, México</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
