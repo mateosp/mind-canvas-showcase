@@ -5,9 +5,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Users, Eye, Palette, MapPin, Globe, Heart, Star, Award } from "lucide-react"
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 export default function About() {
-  const services = [
+  const [showAdditionalServices, setShowAdditionalServices] = useState(false);
+
+  const mainServices = [
     {
       icon: <Globe className="h-8 w-8" />,
       title: "Viajes",
@@ -16,8 +19,12 @@ export default function About() {
     {
       icon: <Heart className="h-8 w-8" />,
       title: "Asesorías",
-      description: "Consultoría personalizada para coleccionistas y amantes del arte."
-    },
+      description: "Consultoría personalizada para coleccionistas y amantes del arte.",
+      isExpandable: true
+    }
+  ]
+
+  const additionalServices = [
     {
       icon: <Star className="h-8 w-8" />,
       title: "Búsqueda y compra de obras de arte",
@@ -58,7 +65,7 @@ export default function About() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-muted/30">
+      <section className="pt-24 pb-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
@@ -72,7 +79,7 @@ export default function About() {
       </section>
 
       {/* Mission, Team, Presence */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="space-y-16">
             {teamMembers.map((member, index) => (
@@ -108,9 +115,13 @@ export default function About() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {mainServices.map((service, index) => (
+              <Card 
+                key={index} 
+                className={`group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
+                onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
+              >
                 <CardContent className="p-8 text-center space-y-4">
                   <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
@@ -119,10 +130,36 @@ export default function About() {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {service.description}
                   </p>
+                  {service.isExpandable && (
+                    <div className="pt-2">
+                      <span className="text-sm text-accent font-medium group-hover:underline">
+                        {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
+                      </span>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
           </div>
+          
+          {/* Servicios adicionales */}
+          {showAdditionalServices && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 animate-fade-in">
+              {additionalServices.map((service, index) => (
+                <Card key={index} className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-bold">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
