@@ -58,13 +58,13 @@ export default function About() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-hero text-white">
+      <section className="pt-24 pb-16 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
-              Acerca de Nosotros
+            <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
+              Acerca de <span className="bg-gradient-hero bg-clip-text text-transparent">Nosotros</span>
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in">
+            <p className="text-xl md:text-2xl font-light animate-scale-in text-foreground/80">
               Conectando el arte latinoamericano con el mundo
             </p>
           </div>
