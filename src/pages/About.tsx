@@ -173,7 +173,7 @@ export default function About() {
               ¿Listo para explorar el mundo del arte?
             </h2>
             <p className="text-xl text-white/95 font-medium">
-              Únete a nuestra comunidad y descubre experiencias artísticas extraordinarias
+            Da el primer paso, contáctanos y haz realidad tu experiencia artística.
             </p>
             <div className="flex justify-center">
               <Link to="/contact">
