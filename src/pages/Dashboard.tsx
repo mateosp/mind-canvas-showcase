@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react"
-import { Navbar } from "@/components/ui/navbar"
-import { Footer } from "@/components/ui/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -197,8 +195,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-white">
         <div className="container mx-auto px-4">
@@ -384,8 +380,6 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 } 

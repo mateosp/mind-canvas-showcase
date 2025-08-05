@@ -3,7 +3,7 @@ import { Button } from "./button"
 import { Input } from "./input"
 import { toast } from "@/hooks/use-toast"
 import { db } from "@/config/firebase"
-import { collection, addDoc, getDoc, doc } from "firebase/firestore"
+import { collection, addDoc, getDoc, doc, query, where, getDocs } from "firebase/firestore"
 
 export function Newsletter() {
   const [email, setEmail] = useState("")
@@ -40,9 +40,25 @@ export function Newsletter() {
       console.log("Email a suscribir:", email)
       console.log("Estado de conexión Firebase:", isFirebaseConnected)
       
-      // Agregar nueva suscripción directamente
-      console.log("Agregando nueva suscripción...")
+      // Verificar si el email ya existe
+      console.log("Verificando si el email ya está suscrito...")
       const suscripcionesRef = collection(db, "suscripciones")
+      const q = query(suscripcionesRef, where("email", "==", email))
+      const querySnapshot = await getDocs(q)
+      console.log("Documentos encontrados con este email:", querySnapshot.docs.length)
+      
+      if (!querySnapshot.empty) {
+        console.log("Email ya existe en la base de datos")
+        toast({
+          title: "Email ya suscrito",
+          description: "Este correo electrónico ya está suscrito a nuestro newsletter. No se permiten suscripciones duplicadas.",
+          variant: "destructive"
+        })
+        return
+      }
+
+      // Agregar nueva suscripción
+      console.log("Agregando nueva suscripción...")
       const docRef = await addDoc(suscripcionesRef, {
         email: email,
         fecha: new Date(),

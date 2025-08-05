@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react"
-import { Navbar } from "@/components/ui/navbar"
-import { Footer } from "@/components/ui/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
-import { Trash2, Download, Search, Mail } from "lucide-react"
+import { Trash2, Download, Search, Mail, ArrowLeft } from "lucide-react"
 import { auth, db } from "@/config/firebase"
 import { 
   collection, 
@@ -139,14 +137,16 @@ export default function Suscripciones() {
     })
   }
 
+  const handleBack = () => {
+    navigate("/dashboard")
+  }
+
   if (!user) {
     return <div>Cargando...</div>
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-white">
         <div className="container mx-auto px-4">
@@ -167,14 +167,24 @@ export default function Suscripciones() {
           <Card className="border-none bg-white shadow-lg">
             <CardHeader>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                    <Mail className="h-6 w-6" />
-                    Suscripciones ({filteredSuscripciones.length})
-                  </CardTitle>
-                  <p className="text-muted-foreground mt-1">
-                    Total de suscriptores: {suscripciones.length}
-                  </p>
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={handleBack}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Devolver
+                  </Button>
+                  <div>
+                    <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                      <Mail className="h-6 w-6" />
+                      Suscripciones ({filteredSuscripciones.length})
+                    </CardTitle>
+                    <p className="text-muted-foreground mt-1">
+                      Total de suscriptores: {suscripciones.length}
+                    </p>
+                  </div>
                 </div>
                 
                 <div className="flex gap-2">
@@ -266,8 +276,6 @@ export default function Suscripciones() {
           </Card>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 } 
