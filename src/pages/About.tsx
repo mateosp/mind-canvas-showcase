@@ -7,6 +7,11 @@ import { Users, Eye, Palette, MapPin, Globe, Heart, Star, Award } from "lucide-r
 import { Link } from "react-router-dom"
 import { useState } from "react"
 
+// Importar imágenes
+import misionImg from "@/images/mision2.avif"
+import equipoImg from "@/images/equipo.avif"
+import presenciaImg from "@/images/presencia.avif"
+
 export default function About() {
   const [showAdditionalServices, setShowAdditionalServices] = useState(false);
 
@@ -46,17 +51,20 @@ export default function About() {
     {
       icon: <Eye className="h-12 w-12" />,
       title: "Nuestra Misión",
-      content: "En Ojos de Arte, creemos que el arte es un puente entre culturas, una forma poderosa de transmitir historias y crear conexiones humanas profundas. Nuestra misión es democratizar el acceso al arte latinoamericano y crear espacios donde la creatividad y la expresión cultural puedan florecer."
+      content: "En Ojos de Arte, creemos que el arte es un puente entre culturas, una forma poderosa de transmitir historias y crear conexiones humanas profundas. Nuestra misión es democratizar el acceso al arte latinoamericano y crear espacios donde la creatividad y la expresión cultural puedan florecer.",
+      image: misionImg
     },
     {
       icon: <Users className="h-12 w-12" />,
       title: "Nuestro Equipo",
-      content: "Somos un equipo multidisciplinario de profesionales apasionados por el arte y la cultura. Contamos con curadores, historiadores del arte, gestores culturales y expertos en comunicación que trabajan juntos para ofrecer experiencias excepcionales y contenido de calidad."
+      content: "Somos un equipo multidisciplinario de profesionales apasionados por el arte y la cultura. Contamos con curadores, historiadores del arte, gestores culturales y expertos en comunicación que trabajan juntos para ofrecer experiencias excepcionales y contenido de calidad.",
+      image: equipoImg
     },
     {
       icon: <MapPin className="h-12 w-12" />,
       title: "Nuestra Presencia",
-      content: "Con base en América Latina pero con una visión global, conectamos artistas locales con audiencias internacionales. Trabajamos desde México hasta Argentina, creando redes de colaboración que trascienden fronteras geográficas y culturales."
+      content: "Con base en América Latina pero con una visión global, conectamos artistas locales con audiencias internacionales. Trabajamos desde México hasta Argentina, creando redes de colaboración que trascienden fronteras geográficas y culturales.",
+      image: presenciaImg
     }
   ]
 
@@ -102,7 +110,15 @@ export default function About() {
                   </p>
                 </div>
                 <div className="lg:w-1/2">
-                  <div className="w-full h-64 bg-gradient-accent rounded-2xl shadow-artistic"></div>
+                  <div className="w-full h-64 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
+                    <img 
+                      src={member.image} 
+                      alt={member.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
+                  </div>
                 </div>
               </div>
             ))}
