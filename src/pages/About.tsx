@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Users, Eye, Palette, MapPin, Globe, Heart, Star, Award } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
+import { motion } from "framer-motion"
+import { useScrollAnimation } from "@/hooks/useScrollAnimation"
 
 // Importar imágenes
 import misionImg from "@/images/mision2.avif"
@@ -14,6 +16,14 @@ import presenciaImg from "@/images/presencia.avif"
 
 export default function About() {
   const [showAdditionalServices, setShowAdditionalServices] = useState(false);
+
+  // Hooks para animaciones
+  const heroAnimation = useScrollAnimation();
+  const missionAnimation = useScrollAnimation();
+  const teamAnimation = useScrollAnimation();
+  const presenceAnimation = useScrollAnimation();
+  const servicesAnimation = useScrollAnimation();
+  const ctaAnimation = useScrollAnimation();
 
   const mainServices = [
     {
@@ -63,7 +73,7 @@ export default function About() {
     {
       icon: <MapPin className="h-12 w-12" />,
       title: "Nuestra Presencia",
-      content: "Con base en América Latina pero con una visión global, conectamos artistas locales con audiencias internacionales. Trabajamos desde México hasta Argentina, creando redes de colaboración que trascienden fronteras geográficas y culturales.",
+      content: "Con base en América Latina pero con una visión global, conectamos artistas locales con audiencias internacionales. Trabajamos en todo el continente Americano, creando redes de colaboración que trascienden fronteras geográficas y culturales.",
       image: presenciaImg
     }
   ]
@@ -74,16 +84,22 @@ export default function About() {
       
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-white">
-        <div className="container mx-auto px-4 text-center">
+        <motion.div 
+          ref={heroAnimation.ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={heroAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8 }}
+          className="container mx-auto px-4 text-center"
+        >
           <div className="max-w-4xl mx-auto space-y-6">
-            <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
+            <h1 className="text-5xl md:text-7xl font-semibold text-foreground">
               Acerca de <span className="bg-gradient-hero bg-clip-text text-transparent">Nosotros</span>
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in text-foreground/80">
+            <p className="text-xl md:text-2xl font-light text-foreground/80">
               Conectando el arte latinoamericano con el mundo
             </p>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Mission, Team, Presence */}
@@ -96,39 +112,55 @@ export default function About() {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="space-y-16">
-            {teamMembers.map((member, index) => (
-              <div key={index} className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12`}>
-                <div className="lg:w-1/2 space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center text-white">
-                      {member.icon}
+            {teamMembers.map((member, index) => {
+              const animation = index === 0 ? missionAnimation : index === 1 ? teamAnimation : presenceAnimation;
+              return (
+                <motion.div 
+                  key={index} 
+                  ref={animation.ref}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={animation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12`}
+                >
+                  <div className="lg:w-1/2 space-y-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center text-white">
+                        {member.icon}
+                      </div>
+                      <h2 className="text-3xl font-bold">{member.title}</h2>
                     </div>
-                    <h2 className="text-3xl font-bold">{member.title}</h2>
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      {member.content}
+                    </p>
                   </div>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {member.content}
-                  </p>
-                </div>
-                <div className="lg:w-1/2">
-                  <div className="w-full h-64 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
-                    <img 
-                      src={member.image} 
-                      alt={member.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
+                  <div className="lg:w-1/2">
+                    <div className="w-full h-64 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
+                      <img 
+                        src={member.image} 
+                        alt={member.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Services */}
       <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
+        <motion.div 
+          ref={servicesAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6 }}
+          className="container mx-auto px-4"
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Nuestros Servicios</h2>
             <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
@@ -139,36 +171,16 @@ export default function About() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {mainServices.map((service, index) => (
-              <Card 
-                key={index} 
-                className={`group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
-                onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl font-bold">{service.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                  {service.isExpandable && (
-                    <div className="pt-2">
-                      <span className="text-sm text-accent font-medium group-hover:underline">
-                        {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
-                      </span>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {/* Servicios adicionales */}
-          {showAdditionalServices && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 animate-fade-in">
-              {additionalServices.map((service, index) => (
-                <Card key={index} className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+                <Card 
+                  className={`group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
+                  onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
+                >
                   <CardContent className="p-8 text-center space-y-4">
                     <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                       {service.icon}
@@ -177,19 +189,63 @@ export default function About() {
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {service.description}
                     </p>
+                    {service.isExpandable && (
+                      <div className="pt-2">
+                        <span className="text-sm text-accent font-medium group-hover:underline">
+                          {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
+                        </span>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Servicios adicionales */}
+          {showAdditionalServices && (
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {additionalServices.map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Card className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                        {service.icon}
+                      </div>
+                      <h3 className="text-xl font-bold">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {service.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-card text-white relative">
         {/* Overlay para hacer el fondo más oscuro */}
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <motion.div 
+          ref={ctaAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={ctaAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6 }}
+          className="container mx-auto px-4 text-center relative z-10"
+        >
           <div className="max-w-3xl mx-auto space-y-8">
             <h2 className="text-4xl font-bold text-white">
               ¿Listo para explorar el mundo del arte?
@@ -205,7 +261,7 @@ export default function About() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <Newsletter />

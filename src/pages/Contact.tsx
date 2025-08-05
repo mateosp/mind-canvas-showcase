@@ -88,7 +88,7 @@ export default function Contact() {
       icon: <Clock className="h-6 w-6" />,
       title: "Horarios",
       content: "Lun - Vie: 9AM - 6PM",
-      description: "Hora estándar de Colombia"
+      description: "Horario estándar de Colombia"
     }
   ]
 

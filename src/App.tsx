@@ -15,8 +15,44 @@ import Dashboard from "./pages/Dashboard";
 import Suscripciones from "./pages/Suscripciones";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useScrollToTop } from "./hooks/useScrollToTop";
 
 const queryClient = new QueryClient();
+
+const AppContent = () => {
+  useScrollToTop();
+
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<LoginNatalia02025 />} />
+      <Route 
+        path="/dashboard" 
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/suscripciones" 
+        element={
+          <ProtectedRoute>
+            <Suscripciones />
+          </ProtectedRoute>
+        } 
+      />
+      <Route path="/sections/artists" element={<Artists />} />
+      <Route path="/sections/museums" element={<Museums />} />
+      <Route path="/sections/events" element={<Events />} />
+      <Route path="/sections/opinion" element={<Opinion />} />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -24,34 +60,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<LoginNatalia02025 />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/suscripciones" 
-            element={
-              <ProtectedRoute>
-                <Suscripciones />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/sections/artists" element={<Artists />} />
-          <Route path="/sections/museums" element={<Museums />} />
-          <Route path="/sections/events" element={<Events />} />
-          <Route path="/sections/opinion" element={<Opinion />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
