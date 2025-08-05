@@ -9,28 +9,40 @@ import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useScrollAnimation } from "@/hooks/useScrollAnimation"
 
+// Importar imágenes
+import misionImg from "@/images/mision2.avif"
+import equipoImg from "@/images/equipo.avif"
+import serviciosImg from "@/images/servicios.avif"
+import contactanosImg from "@/images/contactanos.avif"
+
+// Importar imágenes para las secciones
+import artistasImg from "@/images/artistas.avif"
+import museosImg from "@/images/museos.jpg"
+import eventosImg from "@/images/PrincipalesEventos.avif"
+import opinionImg from "@/images/opinion.jpg"
+
 export default function Home() {
   const aboutAnimation = useScrollAnimation();
   const sectionsAnimation = useScrollAnimation();
 
   const aboutSections = [
     {
-      icon: <Eye className="h-8 w-8" />,
+      image: misionImg,
       title: "Nuestra Misión",
       description: "Conectar artistas y amantes del arte a través de experiencias transformadoras."
     },
     {
-      icon: <Users className="h-8 w-8" />,
+      image: equipoImg,
       title: "Nuestro Equipo",
       description: "Profesionales apasionados por el arte y la cultura latinoamericana."
     },
     {
-      icon: <Palette className="h-8 w-8" />,
+      image: serviciosImg,
       title: "Nuestros Servicios",
       description: "Viajes, asesorías, búsqueda de obras y proyectos culturales."
     },
     {
-      icon: <MapPin className="h-8 w-8" />,
+      image: contactanosImg,
       title: "Contáctanos",
       description: "Estamos aquí para ayudarte en tu journey artístico."
     }
@@ -40,25 +52,25 @@ export default function Home() {
     {
       title: "Artistas",
       description: "Descubre talento emergente y establecido",
-      image: "🎨",
+      image: artistasImg,
       href: "/sections/artists"
     },
     {
       title: "Museos",
       description: "Explora las mejores galerías y museos",
-      image: "🏛️",
+      image: museosImg,
       href: "/sections/museums"
     },
     {
       title: "Principales eventos",
       description: "No te pierdas los eventos más importantes",
-      image: "🎭",
+      image: eventosImg,
       href: "/sections/events"
     },
     {
       title: "Opinión",
       description: "Análisis y crítica del mundo artístico",
-      image: "✍️",
+      image: opinionImg,
       href: "/sections/opinion"
     }
   ]
@@ -150,10 +162,13 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <div className="aspect-[4/3] bg-gradient-card rounded-lg mb-6 overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500">
-                  <div className="absolute inset-0 flex items-center justify-center text-5xl text-primary/70">
-                    {section.icon}
-                  </div>
-                  <div className="absolute inset-0 bg-white/40 group-hover:bg-white/20 transition-all duration-500"></div>
+                  <img 
+                    src={section.image} 
+                    alt={section.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
@@ -213,10 +228,13 @@ export default function Home() {
                 <Link to={section.href} className="group block">
                   <div className="space-y-3">
                     <div className="aspect-[4/3] bg-card rounded-lg overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group-hover:scale-105 transform">
-                      <div className="absolute inset-0 flex items-center justify-center text-6xl">
-                        {section.image}
-                      </div>
-                      <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-all duration-500"></div>
+                      <img 
+                        src={section.image} 
+                        alt={section.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
