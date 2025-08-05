@@ -48,11 +48,11 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+57 (300) 123-4567</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                <span>Ciudad de México, México</span>
+                <span>Barranquilla, Colombia</span>
               </div>
             </div>
           </div>
@@ -86,10 +86,6 @@ export function Footer() {
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
             Copyright © 2025 Ojos de arte - Todos los derechos reservados.
-          </p>
-          <p className="text-sm text-muted-foreground flex items-center space-x-2">
-            <span>Con tecnología de</span>
-            <span className="font-semibold">Lovable</span>
           </p>
         </div>
       </div>
