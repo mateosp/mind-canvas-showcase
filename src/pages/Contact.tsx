@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react"
+import emailjs from '@emailjs/browser'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -22,16 +23,39 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    toast({
-      title: "¡Mensaje enviado!",
-      description: "Gracias por contactarnos. Te responderemos pronto.",
-    })
-    
-    setFormData({ name: "", email: "", subject: "", message: "" })
-    setIsSubmitting(false)
+    try {
+      // Configuración de EmailJS
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        title: formData.subject,
+        message: formData.message
+      }
+      
+      // Enviar email usando EmailJS
+      const result = await emailjs.send(
+        'service_krgqatg', // Service ID
+        'template_7yfhk4g', // Template ID
+        templateParams,
+        'NGPERyo4N5cFqn6zQ' // Public Key
+      )
+      
+      toast({
+        title: "¡Mensaje enviado!",
+        description: "Gracias por contactarnos. Te responderemos pronto.",
+      })
+      
+      setFormData({ name: "", email: "", subject: "", message: "" })
+    } catch (error) {
+      console.error('Error enviando formulario:', error)
+      toast({
+        title: "Error al enviar",
+        description: "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
