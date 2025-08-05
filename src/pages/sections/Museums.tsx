@@ -23,7 +23,7 @@ export default function Museums() {
 
       {/* ArcGIS Map Section */}
       <section className="py-30 bg-background">
-        <div className="w-[95%] h-[80vh] mx-auto museums-iframe">
+        <div className="w-[90%] h-[80vh] mx-auto museums-iframe">
           <iframe 
             src="https://storymaps.arcgis.com/stories/4a0bcac304d3492283e37cca2537b6cd?cover=false" 
             width="100%" 

@@ -34,14 +34,17 @@ export default function Dashboard() {
   const [isEditing, setIsEditing] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState<any>(null)
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthChecking(false)
       if (user) {
         setUser(user)
         fetchColumns()
       } else {
+        // Usuario no autenticado, redirigir al login
         navigate("/login")
       }
     })
@@ -189,20 +192,33 @@ export default function Dashboard() {
     setIsEditing(null)
   }
 
+  // Mostrar loading mientras verifica autenticación
+  if (isAuthChecking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Verificando autenticación...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Si no hay usuario autenticado, no mostrar nada (ya se redirige)
   if (!user) {
-    return <div>Cargando...</div>
+    return null
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
+      <section className="pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 md:pb-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold animate-fade-in text-foreground leading-tight">
               <span className="bg-gradient-hero bg-clip-text text-transparent">Dashboard</span>
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
+            <p className="text-lg sm:text-xl md:text-2xl font-light animate-scale-in text-black px-2">
               Gestiona las columnas de opinión y suscripciones
             </p>
           </div>
@@ -210,19 +226,19 @@ export default function Dashboard() {
       </section>
 
       {/* Dashboard Content */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6">
           {/* Navigation Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <Edit className="h-6 w-6 text-blue-600" />
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="p-2 sm:p-3 bg-blue-100 rounded-lg flex-shrink-0">
+                    <Edit className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold">Columnas de Opinión</h3>
-                    <p className="text-muted-foreground text-sm">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold">Columnas de Opinión</h3>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
                       Gestiona las columnas de opinión del sitio web
                     </p>
                   </div>
@@ -230,16 +246,16 @@ export default function Dashboard() {
               </CardContent>
             </Card>
             
-            <Link to="/suscripciones">
-              <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-green-100 rounded-lg">
-                      <Mail className="h-6 w-6 text-green-600" />
+            <Link to="/suscripciones" className="block">
+              <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-3 bg-green-100 rounded-lg flex-shrink-0">
+                      <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold">Suscripciones</h3>
-                      <p className="text-muted-foreground text-sm">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold">Suscripciones</h3>
+                      <p className="text-muted-foreground text-xs sm:text-sm">
                         Gestiona las suscripciones al newsletter
                       </p>
                     </div>
@@ -249,45 +265,47 @@ export default function Dashboard() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             
             {/* Form Section */}
             <Card className="border-none bg-white shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold">
+              <CardHeader className="pb-4 sm:pb-6">
+                <CardTitle className="text-xl sm:text-2xl font-bold">
                   {isEditing ? "Editar Columna" : "Nueva Columna de Opinión"}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <CardContent className="p-4 sm:p-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="titulo">Título</Label>
+                    <Label htmlFor="titulo" className="text-sm font-medium">Título</Label>
                     <Input
                       id="titulo"
                       value={titulo}
                       onChange={(e) => setTitulo(e.target.value)}
                       placeholder="Ingresa el título de la columna"
+                      className="h-10 sm:h-11"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="descripcion">Descripción</Label>
+                    <Label htmlFor="descripcion" className="text-sm font-medium">Descripción</Label>
                     <Textarea
                       id="descripcion"
                       value={descripcion}
                       onChange={(e) => setDescripcion(e.target.value)}
                       placeholder="Ingresa la descripción de la columna"
-                      rows={6}
+                      rows={4}
+                      className="min-h-[100px] sm:min-h-[120px]"
                       required
                     />
                   </div>
                   
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <Button 
                       type="submit" 
                       disabled={isLoading}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 h-10 sm:h-11"
                     >
                       {isLoading ? (
                         "Guardando..."
@@ -304,7 +322,7 @@ export default function Dashboard() {
                         type="button" 
                         variant="outline"
                         onClick={handleCancel}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 h-10 sm:h-11"
                       >
                         <X className="h-4 w-4" />
                         Cancelar
@@ -317,57 +335,57 @@ export default function Dashboard() {
 
             {/* Columns List */}
             <Card className="border-none bg-white shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold">
+              <CardHeader className="pb-4 sm:pb-6">
+                <CardTitle className="text-xl sm:text-2xl font-bold">
                   Columnas Existentes ({columns.length})
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-3 sm:space-y-4">
                   {columns.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">
+                    <p className="text-muted-foreground text-center py-8 text-sm sm:text-base">
                       No hay columnas de opinión creadas aún
                     </p>
                   ) : (
                     columns.map((column, index) => (
                       <div 
                         key={column.id} 
-                        className="p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                        className="p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                       >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                          <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-sm font-medium text-muted-foreground">
+                              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                                 #{index + 1}
                               </span>
-                              <h3 className="font-semibold text-lg">{column.titulo}</h3>
+                              <h3 className="font-semibold text-base sm:text-lg truncate">{column.titulo}</h3>
                             </div>
-                            <p className="text-muted-foreground text-sm line-clamp-2">
+                            <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-2">
                               {column.descripcion}
                             </p>
-                            <p className="text-xs text-muted-foreground mt-2">
+                            <p className="text-xs text-muted-foreground">
                               Creada: {column.createdAt.toLocaleDateString()}
                             </p>
                           </div>
                           
-                          <div className="flex gap-2 ml-4">
+                          <div className="flex gap-2 sm:ml-4 flex-shrink-0">
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => handleEdit(column)}
-                              className="flex items-center gap-1"
+                              className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
                             >
                               <Edit className="h-3 w-3" />
-                              Editar
+                              <span className="hidden sm:inline">Editar</span>
                             </Button>
                             <Button
                               size="sm"
                               variant="destructive"
                               onClick={() => handleDelete(column.id)}
-                              className="flex items-center gap-1"
+                              className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
                             >
                               <Trash2 className="h-3 w-3" />
-                              Eliminar
+                              <span className="hidden sm:inline">Eliminar</span>
                             </Button>
                           </div>
                         </div>

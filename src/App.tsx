@@ -14,6 +14,7 @@ import LoginNatalia02025 from "./pages/LoginNatalia02025";
 import Dashboard from "./pages/Dashboard";
 import Suscripciones from "./pages/Suscripciones";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -28,8 +29,22 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginNatalia02025 />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/suscripciones" element={<Suscripciones />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/suscripciones" 
+            element={
+              <ProtectedRoute>
+                <Suscripciones />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/sections/artists" element={<Artists />} />
           <Route path="/sections/museums" element={<Museums />} />
           <Route path="/sections/events" element={<Events />} />

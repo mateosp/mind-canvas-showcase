@@ -146,15 +146,15 @@ export default function Suscripciones() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
+      <section className="pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 md:pb-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold animate-fade-in text-foreground leading-tight">
               <span className="bg-gradient-hero bg-clip-text text-transparent">Suscripciones</span>
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
+            <p className="text-lg sm:text-xl md:text-2xl font-light animate-scale-in text-black px-2">
               Gestiona las suscripciones al newsletter
             </p>
           </div>
@@ -162,83 +162,86 @@ export default function Suscripciones() {
       </section>
 
       {/* Dashboard Content */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6">
           <Card className="border-none bg-white shadow-lg">
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="flex items-center gap-4">
-                  <Button
-                    onClick={handleBack}
-                    variant="outline"
-                    className="flex items-center gap-2"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    Devolver
-                  </Button>
-                  <div>
-                    <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                      <Mail className="h-6 w-6" />
-                      Suscripciones ({filteredSuscripciones.length})
-                    </CardTitle>
-                    <p className="text-muted-foreground mt-1">
-                      Total de suscriptores: {suscripciones.length}
-                    </p>
+            <CardHeader className="p-4 sm:p-6">
+              <div className="flex flex-col gap-4 sm:gap-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                    <Button
+                      onClick={handleBack}
+                      variant="outline"
+                      className="flex items-center gap-2 h-10 sm:h-11"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                      <span className="hidden sm:inline">Devolver</span>
+                    </Button>
+                    <div className="min-w-0">
+                      <CardTitle className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                        <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
+                        <span className="truncate">Suscripciones ({filteredSuscripciones.length})</span>
+                      </CardTitle>
+                      <p className="text-muted-foreground mt-1 text-sm sm:text-base">
+                        Total de suscriptores: {suscripciones.length}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex gap-2">
-                  <Button
-                    onClick={handleExport}
-                    disabled={filteredSuscripciones.length === 0}
-                    className="flex items-center gap-2"
-                  >
-                    <Download className="h-4 w-4" />
-                    Exportar CSV
-                  </Button>
+                  
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <Button
+                      onClick={handleExport}
+                      disabled={filteredSuscripciones.length === 0}
+                      className="flex items-center gap-2 h-10 sm:h-11 flex-1 sm:flex-none"
+                    >
+                      <Download className="h-4 w-4" />
+                      <span className="hidden sm:inline">Exportar CSV</span>
+                      <span className="sm:hidden">Exportar</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardHeader>
             
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               {/* Search Bar */}
-              <div className="mb-6">
+              <div className="mb-4 sm:mb-6">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
                     placeholder="Buscar por email..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-10 sm:h-11"
                   />
                 </div>
               </div>
 
               {/* Suscripciones List */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {isLoading ? (
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                    <p className="text-muted-foreground mt-2">Cargando suscripciones...</p>
+                    <p className="text-muted-foreground mt-2 text-sm sm:text-base">Cargando suscripciones...</p>
                   </div>
                 ) : filteredSuscripciones.length === 0 ? (
                   <div className="text-center py-8">
                     <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-sm sm:text-base">
                       {searchTerm ? "No se encontraron suscripciones con ese email" : "No hay suscripciones aún"}
                     </p>
                   </div>
                 ) : (
-                  <div className="grid gap-4">
+                  <div className="grid gap-3 sm:gap-4">
                     {filteredSuscripciones.map((suscripcion, index) => (
                       <div 
                         key={suscripcion.id} 
-                        className="p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                        className="p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-sm font-medium text-muted-foreground">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                                 #{index + 1}
                               </span>
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -249,21 +252,21 @@ export default function Suscripciones() {
                                 {suscripcion.activo ? 'Activo' : 'Inactivo'}
                               </span>
                             </div>
-                            <p className="font-medium text-lg">{suscripcion.email}</p>
+                            <p className="font-medium text-base sm:text-lg break-all">{suscripcion.email}</p>
                             <p className="text-xs text-muted-foreground mt-1">
                               Suscrito: {suscripcion.fecha.toLocaleDateString()} a las {suscripcion.fecha.toLocaleTimeString()}
                             </p>
                           </div>
                           
-                          <div className="flex gap-2 ml-4">
+                          <div className="flex gap-2 sm:ml-4 flex-shrink-0">
                             <Button
                               size="sm"
                               variant="destructive"
                               onClick={() => handleDelete(suscripcion.id)}
-                              className="flex items-center gap-1"
+                              className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
                             >
                               <Trash2 className="h-3 w-3" />
-                              Eliminar
+                              <span className="hidden sm:inline">Eliminar</span>
                             </Button>
                           </div>
                         </div>
