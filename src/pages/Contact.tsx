@@ -34,10 +34,10 @@ export default function Contact() {
       
       // Enviar email usando EmailJS
       const result = await emailjs.send(
-        'service_krgqatg', // Service ID
-        'template_7yfhk4g', // Template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_krgqatg', // Service ID
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_7yfhk4g', // Template ID
         templateParams,
-        'NGPERyo4N5cFqn6zQ' // Public Key
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'NGPERyo4N5cFqn6zQ' // Public Key
       )
       
       toast({
