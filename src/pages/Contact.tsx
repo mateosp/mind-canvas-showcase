@@ -75,20 +75,20 @@ export default function Contact() {
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Teléfono",
-      content: "+1 (555) 123-4567",
+      content: "+57 (301) 123-4567",
       description: "Lunes a Viernes, 9AM - 6PM"
     },
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "Ubicación",
-      content: "Ciudad de México, México",
+      content: "Barranquilla, Colombia",
       description: "América Latina"
     },
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Horarios",
       content: "Lun - Vie: 9AM - 6PM",
-      description: "Tiempo estándar de México"
+      description: "Hora estándar de Colombia"
     }
   ]
 
