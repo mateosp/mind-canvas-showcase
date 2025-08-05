@@ -32,10 +32,10 @@ export default function LoginNatalia02025() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
-      if (user) {
-        // Usuario ya está logueado, redirigir al home
-        navigate("/")
-      }
+             if (user) {
+         // Usuario ya está logueado, redirigir al dashboard
+         navigate("/dashboard")
+       }
     })
 
     return () => unsubscribe()
@@ -48,12 +48,12 @@ export default function LoginNatalia02025() {
     try {
       if (isLogin) {
         // Login
-        await signInWithEmailAndPassword(auth, email, password)
-        toast({
-          title: "¡Inicio de sesión exitoso!",
-          description: "Bienvenido de vuelta.",
-        })
-        navigate("/")
+                 await signInWithEmailAndPassword(auth, email, password)
+         toast({
+           title: "¡Inicio de sesión exitoso!",
+           description: "Bienvenido de vuelta.",
+         })
+         navigate("/dashboard")
       } else {
         // Registro
         if (password !== confirmPassword) {
@@ -65,12 +65,12 @@ export default function LoginNatalia02025() {
           return
         }
         
-        await createUserWithEmailAndPassword(auth, email, password)
-        toast({
-          title: "¡Registro exitoso!",
-          description: "Tu cuenta ha sido creada correctamente.",
-        })
-        navigate("/")
+                 await createUserWithEmailAndPassword(auth, email, password)
+         toast({
+           title: "¡Registro exitoso!",
+           description: "Tu cuenta ha sido creada correctamente.",
+         })
+         navigate("/dashboard")
       }
     } catch (error: any) {
       let errorMessage = "Ocurrió un error inesperado."
@@ -249,6 +249,18 @@ export default function LoginNatalia02025() {
                       </>
                     )}
                   </Button>
+                  
+                  {user && (
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => navigate("/dashboard")}
+                      className="w-full"
+                      size="lg"
+                    >
+                      Ir al Dashboard
+                    </Button>
+                  )}
                 </form>
 
                 <div className="mt-6 text-center">
