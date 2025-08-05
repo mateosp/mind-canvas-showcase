@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Save, X } from "lucide-react"
+import { Plus, Edit, Trash2, Save, X, Mail } from "lucide-react"
 import { auth, db } from "@/config/firebase"
 import { 
   collection, 
@@ -19,7 +19,7 @@ import {
   orderBy,
   query
 } from "firebase/firestore"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 
 interface OpinionColumn {
@@ -207,7 +207,7 @@ export default function Dashboard() {
               <span className="bg-gradient-hero bg-clip-text text-transparent">Dashboard</span>
             </h1>
             <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
-              Gestiona las columnas de opinión
+              Gestiona las columnas de opinión y suscripciones
             </p>
           </div>
         </div>
@@ -216,6 +216,43 @@ export default function Dashboard() {
       {/* Dashboard Content */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
+          {/* Navigation Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-blue-100 rounded-lg">
+                    <Edit className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold">Columnas de Opinión</h3>
+                    <p className="text-muted-foreground text-sm">
+                      Gestiona las columnas de opinión del sitio web
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Link to="/suscripciones">
+              <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-green-100 rounded-lg">
+                      <Mail className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">Suscripciones</h3>
+                      <p className="text-muted-foreground text-sm">
+                        Gestiona las suscripciones al newsletter
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
             {/* Form Section */}
