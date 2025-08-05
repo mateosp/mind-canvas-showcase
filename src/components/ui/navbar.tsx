@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Menu, X, ChevronDown } from "lucide-react"
-import { ThemeToggle } from "./theme-toggle"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./dialog"
 import { Button } from "./button"
@@ -93,13 +92,8 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Desktop Theme Toggle & Mobile Menu */}
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block">
-                <ThemeToggle />
-              </div>
-              
-              {/* Mobile menu button */}
+            {/* Mobile menu button */}
+            <div className="flex items-center">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
@@ -169,11 +163,6 @@ export function Navbar() {
                     )}
                   </div>
                 ))}
-                
-                {/* Mobile Theme Toggle */}
-                <div className="flex justify-center pt-2 pb-1">
-                  <ThemeToggle />
-                </div>
               </div>
             </div>
           )}
