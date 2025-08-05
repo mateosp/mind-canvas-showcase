@@ -3,63 +3,25 @@ import { Newsletter } from "@/components/ui/newsletter"
 import { Footer } from "@/components/ui/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { MapPin, User, Palette, Star, ExternalLink } from "lucide-react"
-import InteractiveMap from "@/components/InteractiveMap"
-import { artistsData } from "@/data/mapData"
+import { ExternalLink } from "lucide-react"
 
 export default function Artists() {
-  const featuredArtists = [
-    {
-      name: "María González",
-      country: "México",
-      style: "Abstracto Contemporáneo",
-      rating: 4.9,
-      image: "👩‍🎨",
-      description: "Artista emergente especializada en técnicas mixtas y expresionismo abstracto."
-    },
-    {
-      name: "Carlos Silva",
-      country: "Argentina",
-      style: "Realismo Mágico",
-      rating: 4.8,
-      image: "👨‍🎨",
-      description: "Pintor reconocido internacionalmente por sus obras de realismo mágico."
-    },
-    {
-      name: "Ana Rodríguez",
-      country: "Colombia",
-      style: "Arte Digital",
-      rating: 4.7,
-      image: "👩‍💻",
-      description: "Pionera en arte digital y nuevas tecnologías aplicadas al arte."
-    },
-    {
-      name: "Diego Martínez",
-      country: "Perú",
-      style: "Escultura Moderna",
-      rating: 4.9,
-      image: "👨‍🏭",
-      description: "Escultor innovador que combina técnicas tradicionales con materiales modernos."
-    }
-  ]
-
-  const categories = [
-    "Pintura", "Escultura", "Arte Digital", "Fotografía", "Arte Textil", "Cerámica"
-  ]
+  const handleMapClick = () => {
+    window.open("https://storymaps.arcgis.com/stories/92dfadfc835845eb9d08fb9599cd7d7b?header", "_blank")
+  }
 
   return (
     <div className="min-h-screen">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-hero text-white">
+      <section className="pt-24 pb-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
+            <h1 className="text-5xl md:text-7xl font-bold animate-fade-in bg-gradient-hero bg-clip-text text-transparent">
               Artistas
             </h1>
-            <p className="text-xl md:text-2xl font-light animate-scale-in">
+            <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
               Descubre el talento emergente y establecido de América Latina
             </p>
           </div>
@@ -67,78 +29,31 @@ export default function Artists() {
       </section>
 
       {/* Interactive Map Section */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Mapa Interactivo de Colombia</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-            <p className="text-muted-foreground mt-4">Descubre artistas por toda Colombia</p>
-          </div>
-          
-          <InteractiveMap type="artists" data={artistsData} />
-        </div>
-      </section>
-
-      {/* Featured Artists */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Artistas Destacados</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredArtists.map((artist, index) => (
-              <Card key={index} className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="text-6xl">{artist.image}</div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold">{artist.name}</h3>
-                    <div className="flex items-center justify-center space-x-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{artist.country}</span>
-                    </div>
-                    <Badge variant="secondary" className="bg-gradient-card text-white">
-                      {artist.style}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {artist.description}
+          <div className="max-w-2xl mx-auto">
+            <Card 
+              className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 cursor-pointer"
+              onClick={handleMapClick}
+            >
+              <CardContent className="p-8 text-center space-y-6">
+                <div className="text-6xl">🗺️</div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-foreground">Explora el Mapa de Artistas</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Descubre artistas de toda América Latina en nuestro mapa interactivo. 
+                    Haz clic para explorar las ubicaciones y obras de artistas destacados.
                   </p>
-                  <div className="flex items-center justify-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">{artist.rating}</span>
-                  </div>
-                  <Button variant="outline" size="sm" className="w-full group-hover:bg-gradient-card group-hover:text-white transition-all">
-                    Ver Portafolio
+                  <Button 
+                    className="bg-gradient-card hover:shadow-artistic transition-all duration-300"
+                    size="lg"
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Abrir Mapa Interactivo
                   </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Categorías de Arte</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                size="lg"
-                className="hover:bg-gradient-card hover:text-white transition-all duration-300"
-              >
-                <Palette className="mr-2 h-4 w-4" />
-                {category}
-              </Button>
-            ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
