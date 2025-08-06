@@ -3,9 +3,8 @@ import { Newsletter } from "@/components/ui/newsletter"
 import { Footer } from "@/components/ui/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Eye, Palette, MapPin, Globe, Heart, Star, Award } from "lucide-react"
+import { Users, Eye, Palette, MapPin } from "lucide-react"
 import { Link } from "react-router-dom"
-import { useState } from "react"
 import { motion } from "framer-motion"
 import { useScrollAnimation } from "@/hooks/useScrollAnimation"
 
@@ -15,47 +14,12 @@ import equipoImg from "@/images/equipo.avif"
 import presenciaImg from "@/images/presencia.avif"
 
 export default function About() {
-  const [showAdditionalServices, setShowAdditionalServices] = useState(false);
-
   // Hooks para animaciones
   const heroAnimation = useScrollAnimation();
   const missionAnimation = useScrollAnimation();
   const teamAnimation = useScrollAnimation();
   const presenceAnimation = useScrollAnimation();
-  const servicesAnimation = useScrollAnimation();
   const ctaAnimation = useScrollAnimation();
-
-  const mainServices = [
-    {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Viajes",
-      description: "Experiencias artísticas únicas alrededor del mundo con guías especializados."
-    },
-    {
-      icon: <Heart className="h-8 w-8" />,
-      title: "Asesorías",
-      description: "Consultoría personalizada para coleccionistas y amantes del arte.",
-      isExpandable: true
-    }
-  ]
-
-  const additionalServices = [
-    {
-      icon: <Star className="h-8 w-8" />,
-      title: "Búsqueda y compra de obras de arte",
-      description: "Te ayudamos a encontrar la pieza perfecta para tu colección."
-    },
-    {
-      icon: <Award className="h-8 w-8" />,
-      title: "Proyectos culturales",
-      description: "Desarrollo de iniciativas que fortalecen la cultura local."
-    },
-    {
-      icon: <Palette className="h-8 w-8" />,
-      title: "Proyectos patrimoniales",
-      description: "Preservación y promoción del patrimonio artístico."
-    }
-  ]
 
   const teamMembers = [
     {
@@ -66,7 +30,7 @@ export default function About() {
     },
     {
       icon: <Users className="h-12 w-12" />,
-      title: "Nuestro Equipo",
+      title: "Una Mirada a La Fundadora",
       content: "Somos un equipo multidisciplinario de profesionales apasionados por el arte y la cultura. Contamos con curadores, historiadores del arte, gestores culturales y expertos en comunicación que trabajan juntos para ofrecer experiencias excepcionales y contenido de calidad.",
       image: equipoImg
     },
@@ -150,89 +114,6 @@ export default function About() {
             })}
           </div>
         </div>
-      </section>
-
-      {/* Services */}
-      <section className="py-20 bg-muted/30">
-        <motion.div 
-          ref={servicesAnimation.ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6 }}
-          className="container mx-auto px-4"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Nuestros Servicios</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-            <p className="text-muted-foreground mt-6 max-w-2xl mx-auto">
-              Ofrecemos una gama completa de servicios para conectarte con el mundo del arte
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {mainServices.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card 
-                  className={`group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
-                  onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
-                >
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-xl font-bold">{service.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                    {service.isExpandable && (
-                      <div className="pt-2">
-                        <span className="text-sm text-accent font-medium group-hover:underline">
-                          {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
-                        </span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Servicios adicionales */}
-          {showAdditionalServices && (
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {additionalServices.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Card className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
-                    <CardContent className="p-8 text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                        {service.icon}
-                      </div>
-                      <h3 className="text-xl font-bold">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {service.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </motion.div>
       </section>
 
       {/* CTA Section */}

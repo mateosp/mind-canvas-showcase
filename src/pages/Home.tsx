@@ -4,16 +4,11 @@ import { Footer } from "@/components/ui/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Users, Eye, Palette, MapPin, ArrowRight } from "lucide-react"
+import { Users, Eye, Palette, MapPin, ArrowRight, Globe, Heart, Star, Award } from "lucide-react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useScrollAnimation } from "@/hooks/useScrollAnimation"
-
-// Importar imágenes
-import misionImg from "@/images/mision2.avif"
-import equipoImg from "@/images/equipo.avif"
-import serviciosImg from "@/images/servicios.avif"
-import contactanosImg from "@/images/contactanos.avif"
+import { useState } from "react"
 
 // Importar imágenes para las secciones
 import artistasImg from "@/images/artistas.avif"
@@ -22,29 +17,39 @@ import eventosImg from "@/images/PrincipalesEventos.avif"
 import opinionImg from "@/images/opinion.jpg"
 
 export default function Home() {
-  const aboutAnimation = useScrollAnimation();
   const sectionsAnimation = useScrollAnimation();
+  const servicesAnimation = useScrollAnimation();
+  const [showAdditionalServices, setShowAdditionalServices] = useState(false);
 
-  const aboutSections = [
+  const mainServices = [
     {
-      image: misionImg,
-      title: "Nuestra Misión",
-      description: "Conectar artistas y amantes del arte a través de experiencias transformadoras."
+      icon: <Globe className="h-8 w-8" />,
+      title: "Viajes",
+      description: "Experiencias artísticas únicas alrededor del mundo con guías especializados."
     },
     {
-      image: equipoImg,
-      title: "Nuestro Equipo",
-      description: "Profesionales apasionados por el arte y la cultura latinoamericana."
+      icon: <Heart className="h-8 w-8" />,
+      title: "Asesorías",
+      description: "Consultoría personalizada para coleccionistas y amantes del arte.",
+      isExpandable: true
+    }
+  ]
+
+  const additionalServices = [
+    {
+      icon: <Star className="h-8 w-8" />,
+      title: "Búsqueda y compra de obras de arte",
+      description: "Te ayudamos a encontrar la pieza perfecta para tu colección."
     },
     {
-      image: serviciosImg,
-      title: "Nuestros Servicios",
-      description: "Viajes, asesorías, búsqueda de obras y proyectos culturales."
+      icon: <Award className="h-8 w-8" />,
+      title: "Proyectos culturales",
+      description: "Desarrollo de iniciativas que fortalecen la cultura local."
     },
     {
-      image: contactanosImg,
-      title: "Contáctanos",
-      description: "Estamos aquí para ayudarte en tu journey artístico."
+      icon: <Palette className="h-8 w-8" />,
+      title: "Proyectos patrimoniales",
+      description: "Preservación y promoción del patrimonio artístico."
     }
   ]
 
@@ -114,18 +119,15 @@ export default function Home() {
             >
               Explorar Secciones
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="min-w-[200px] font-light border-foreground/30 hover:bg-foreground/10 backdrop-blur-sm"
-              onClick={() => {
-                document.getElementById('nuestros-servicios')?.scrollIntoView({ 
-                  behavior: 'smooth' 
-                });
-              }}
-            >
-              Conoce Más
-            </Button>
+            <Link to="/about">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="min-w-[200px] font-light border-foreground/30 hover:bg-foreground/10 backdrop-blur-sm"
+              >
+                Conoce Más
+              </Button>
+            </Link>
           </motion.div>
         </div>
         
@@ -134,71 +136,6 @@ export default function Home() {
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-secondary/30 to-accent/30 rounded-full blur-xl animate-pulse delay-500"></div>
         <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-gradient-to-br from-accent/25 to-secondary/25 rounded-full blur-xl animate-pulse delay-700"></div>
-      </section>
-
-      {/* About Section - 4 columns */}
-      <section id="nuestros-servicios" className="py-32 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center mb-20"
-            ref={aboutAnimation.ref}
-            initial={{ opacity: 0, y: 50 }}
-            animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-foreground">Nuestros servicios</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
-              Conectamos artistas y amantes del arte a través de experiencias transformadoras en América Latina.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            {aboutSections.map((section, index) => (
-              <motion.div 
-                key={index} 
-                className="group cursor-pointer"
-                initial={{ opacity: 0, y: 50 }}
-                animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <div className="aspect-[4/3] bg-gradient-card rounded-lg mb-6 overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500">
-                  <img 
-                    src={section.image} 
-                    alt={section.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                    {section.title}
-                  </h3>
-                  <p className="text-muted-foreground font-light leading-relaxed text-sm">
-                    {section.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Botón centralizado */}
-          <motion.div 
-            className="text-center mt-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={aboutAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-          >
-            <Link to="/about">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white font-medium px-12 py-3 h-auto"
-              >
-                Conoce más
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
       </section>
 
       {/* Available Sections */}
@@ -211,7 +148,6 @@ export default function Home() {
             animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-semibold mb-6">Nuestras secciones</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
             </p>
@@ -255,6 +191,91 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Services */}
+      <section className="py-20 bg-muted/30">
+        <motion.div 
+          ref={servicesAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6 }}
+          className="container mx-auto px-4"
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Nuestros Servicios</h2>
+            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
+            <p className="text-muted-foreground mt-6 max-w-2xl mx-auto">
+              Ofrecemos una gama completa de servicios para conectarte con el mundo del arte
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {mainServices.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Card 
+                  className={`h-full group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
+                  onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
+                >
+                  <CardContent className="p-8 text-center h-full flex flex-col justify-between space-y-4">
+                    <div className="space-y-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                        {service.icon}
+                      </div>
+                      <h3 className="text-xl font-bold">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+                    <div className="pt-2 min-h-[2rem] flex items-center justify-center">
+                      {service.isExpandable && (
+                        <span className="text-sm text-accent font-medium group-hover:underline">
+                          {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Servicios adicionales */}
+          {showAdditionalServices && (
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {additionalServices.map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Card className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                        {service.icon}
+                      </div>
+                      <h3 className="text-xl font-bold">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {service.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </motion.div>
       </section>
 
       <Newsletter />
