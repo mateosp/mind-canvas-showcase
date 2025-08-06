@@ -194,7 +194,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section className="py-20 bg-muted/30">
+      <section id="nuestros-servicios" className="py-20 bg-muted/30">
         <motion.div 
           ref={servicesAnimation.ref}
           initial={{ opacity: 0, y: 50 }}

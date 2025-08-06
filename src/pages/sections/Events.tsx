@@ -34,10 +34,6 @@ export default function Events() {
         <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-gradient-to-br from-accent/25 to-secondary/25 rounded-full blur-xl animate-pulse delay-700"></div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Categorías de Eventos</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card 
