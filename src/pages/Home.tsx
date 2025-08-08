@@ -154,7 +154,7 @@ export default function Home() {
             animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-2xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-2xl text-muted-foreground max-w-2xl mx-auto font-semibold leading-relaxed">
               Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
             </p>
           </motion.div>

@@ -75,7 +75,7 @@ export default function Contact() {
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Teléfono",
-      content: "+57 (301) 123-4567",
+      content: "+57 (304) 346-2850",
       description: "Lunes a Viernes, 9AM - 6PM"
     },
     {

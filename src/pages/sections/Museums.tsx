@@ -63,7 +63,7 @@ export default function Museums() {
               </div>
               <p className="text-lg mb-6 leading-relaxed">
                 <span className="text-black font-semibold hover:text-gray-700 transition-all duration-300">
-                  Te ofrecemos consultorías personalizadas para coleccionistas y amantes del arte.
+                Te ofrecemos experiencias artísticas únicas alrededor del mundo con guías especializados
                 </span>
               </p>
               <div className="flex justify-center">

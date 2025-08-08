@@ -62,7 +62,7 @@ export default function Events() {
                 <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white">
                   <Globe className="h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold">Worldwide</h3>
+                <h3 className="text-2xl font-bold">WORLDWIDE</h3>
                 <p className="text-muted-foreground">
                   Eventos internacionales imperdibles
                 </p>

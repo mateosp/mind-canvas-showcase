@@ -75,31 +75,6 @@ export function Footer() {
               </div>
             </div>
           </div>
-
-          {/* Social */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Síguenos</h4>
-            <div className="flex space-x-4">
-              <a 
-                href="#" 
-                className="p-2 bg-gradient-card text-white rounded-full hover:shadow-artistic transition-all duration-300 hover:scale-110"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a 
-                href="#" 
-                className="p-2 bg-gradient-card text-white rounded-full hover:shadow-artistic transition-all duration-300 hover:scale-110"
-              >
-                <Twitter className="h-4 w-4" />
-              </a>
-              <a 
-                href="#" 
-                className="p-2 bg-gradient-card text-white rounded-full hover:shadow-artistic transition-all duration-300 hover:scale-110"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-            </div>
-          </div>
         </div>
 
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
