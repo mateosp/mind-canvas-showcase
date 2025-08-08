@@ -16,6 +16,10 @@ import museosImg from "@/images/museos.avif"
 import eventosImg from "@/images/eventos.avif"
 import opinionImg from "@/images/opinion.avif"
 
+// Importar imágenes para los servicios
+import viajesImg from "@/images/viajes.avif"
+import asesoriasImg from "@/images/asesorias.avif"
+
 export default function Home() {
   const sectionsAnimation = useScrollAnimation();
   const servicesAnimation = useScrollAnimation();
@@ -25,13 +29,15 @@ export default function Home() {
     {
       icon: <Globe className="h-8 w-8" />,
       title: "Viajes",
-      description: "Experiencias artísticas únicas alrededor del mundo con guías especializados."
+      description: "Experiencias artísticas únicas alrededor del mundo con guías especializados.",
+      image: viajesImg
     },
     {
       icon: <Heart className="h-8 w-8" />,
       title: "Asesorías",
       description: "Consultoría personalizada para coleccionistas y amantes del arte.",
-      isExpandable: true
+      isExpandable: true,
+      image: asesoriasImg
     }
   ]
 
@@ -226,10 +232,25 @@ export default function Home() {
                 >
                   <CardContent className="p-8 text-center h-full flex flex-col justify-between space-y-4">
                     <div className="space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                        {service.icon}
+                      {/* Imagen del servicio */}
+                      <div className="aspect-[4/3] bg-white/10 rounded-lg overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group-hover:scale-105 transform">
+                        <img 
+                          src={service.image} 
+                          alt={service.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500"></div>
                       </div>
-                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                      
+                      {/* Icono y título */}
+                      <div className="flex items-center justify-center space-x-3">
+                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                          {service.icon}
+                        </div>
+                        <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                      </div>
+                      
                       <p className="text-white/80 text-sm leading-relaxed">
                         {service.description}
                       </p>
