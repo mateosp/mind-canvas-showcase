@@ -99,7 +99,7 @@ export default function About() {
                     </p>
                   </div>
                   <div className="lg:w-1/2">
-                    <div className="w-full h-64 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
+                    <div className="w-full h-80 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
                       <img 
                         src={member.image} 
                         alt={member.title}

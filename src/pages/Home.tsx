@@ -148,7 +148,7 @@ export default function Home() {
             animate={sectionsAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-2xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Explora nuestro contenido especializado en arte, cultura y creatividad latinoamericana.
             </p>
           </motion.div>
@@ -194,18 +194,20 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="nuestros-servicios" className="py-20 bg-muted/30">
+      <section id="nuestros-servicios" className="py-20 bg-gradient-card text-white relative">
+        {/* Overlay para hacer el fondo más oscuro */}
+        <div className="absolute inset-0 bg-black/20"></div>
         <motion.div 
           ref={servicesAnimation.ref}
           initial={{ opacity: 0, y: 50 }}
           animate={servicesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6 }}
-          className="container mx-auto px-4"
+          className="container mx-auto px-4 relative z-10"
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Nuestros Servicios</h2>
-            <div className="w-24 h-1 bg-gradient-card mx-auto rounded-full"></div>
-            <p className="text-muted-foreground mt-6 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-white">Nuestros Servicios</h2>
+            <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
+            <p className="text-white/95 mt-6 max-w-2xl mx-auto">
               Ofrecemos una gama completa de servicios para conectarte con el mundo del arte
             </p>
           </div>
@@ -219,22 +221,22 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <Card 
-                  className={`h-full group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30 ${service.isExpandable ? 'cursor-pointer' : ''}`}
+                  className={`h-full group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-white/10 backdrop-blur-sm ${service.isExpandable ? 'cursor-pointer' : ''}`}
                   onClick={service.isExpandable ? () => setShowAdditionalServices(!showAdditionalServices) : undefined}
                 >
                   <CardContent className="p-8 text-center h-full flex flex-col justify-between space-y-4">
                     <div className="space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                         {service.icon}
                       </div>
-                      <h3 className="text-xl font-bold">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                      <p className="text-white/80 text-sm leading-relaxed">
                         {service.description}
                       </p>
                     </div>
                     <div className="pt-2 min-h-[2rem] flex items-center justify-center">
                       {service.isExpandable && (
-                        <span className="text-sm text-accent font-medium group-hover:underline">
+                        <span className="text-sm text-white/90 font-medium group-hover:underline">
                           {showAdditionalServices ? 'Ocultar servicios adicionales' : 'Ver más servicios'}
                         </span>
                       )}
@@ -260,13 +262,13 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Card className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-gradient-to-br from-card to-muted/30">
+                  <Card className="group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-white/10 backdrop-blur-sm">
                     <CardContent className="p-8 text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-card flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                         {service.icon}
                       </div>
-                      <h3 className="text-xl font-bold">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                      <p className="text-white/80 text-sm leading-relaxed">
                         {service.description}
                       </p>
                     </CardContent>

@@ -29,12 +29,10 @@ export function Footer() {
               <Link to="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Acerca de
               </Link>
-              <Link to="/sections" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                Secciones
-              </Link>
               <Link to="/contact" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Contacto
               </Link>
+              
             </div>
           </div>
 
@@ -48,7 +46,7 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+57 (300) 123-4567</span>
+                <span>+57 (304) 346-2850</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />

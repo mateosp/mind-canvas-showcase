@@ -105,13 +105,12 @@ export function Newsletter() {
       <div className="container mx-auto px-4 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold mb-4 uppercase tracking-wider">
-            Espacio disponible para suscripción a newsletters
+            Suscríbete a nuestro newsletter y no te lo pierdas.
           </h2>
           
           <div className="flex flex-col items-center space-y-6">
-            <h3 className="text-2xl font-semibold">Subscribe</h3>
             <p className="text-muted-foreground max-w-md">
-              Sign up for our monthly newsletter of secrets for success.
+              Inspírate cada mes, suscríbete ahora.
             </p>
             
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
