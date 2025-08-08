@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold bg-gradient-card bg-clip-text text-transparent">
@@ -19,7 +19,7 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation - Column 1 */}
           <div className="space-y-4">
             <h4 className="font-semibold">Navegación</h4>
             <div className="space-y-2">
@@ -32,7 +32,28 @@ export function Footer() {
               <Link to="/contact" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Contacto
               </Link>
-              
+              <Link to="/#nuestros-servicios" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                Servicios
+              </Link>
+            </div>
+          </div>
+
+          {/* Navigation - Column 2 */}
+          <div className="space-y-4">
+            <h4 className="font-semibold">Secciones</h4>
+            <div className="space-y-2">
+              <Link to="/sections/artists" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                Artistas
+              </Link>
+              <Link to="/sections/museums" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                Museos
+              </Link>
+              <Link to="/sections/events" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                Eventos
+              </Link>
+              <Link to="/sections/opinion" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                Opinión
+              </Link>
             </div>
           </div>
 
