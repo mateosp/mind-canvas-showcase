@@ -12,9 +12,9 @@ import { useState } from "react"
 
 // Importar imágenes para las secciones
 import artistasImg from "@/images/artistas.avif"
-import museosImg from "@/images/museos.jpg"
-import eventosImg from "@/images/PrincipalesEventos.avif"
-import opinionImg from "@/images/opinion.jpg"
+import museosImg from "@/images/museos.avif"
+import eventosImg from "@/images/eventos.avif"
+import opinionImg from "@/images/opinion.avif"
 
 export default function Home() {
   const sectionsAnimation = useScrollAnimation();
@@ -110,7 +110,7 @@ export default function Home() {
             <Button 
               size="lg" 
               variant="default" 
-              className="min-w-[200px] font-light bg-primary hover:bg-primary/90 shadow-lg"
+              className="min-w-[200px] font-light bg-gradient-card hover:shadow-artistic transition-all duration-300"
               onClick={() => {
                 document.getElementById('nuestras-secciones')?.scrollIntoView({ 
                   behavior: 'smooth' 

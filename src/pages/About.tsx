@@ -9,8 +9,8 @@ import { motion } from "framer-motion"
 import { useScrollAnimation } from "@/hooks/useScrollAnimation"
 
 // Importar imágenes
-import misionImg from "@/images/mision2.avif"
-import equipoImg from "@/images/equipo.avif"
+import misionImg from "@/images/mision.avif"
+import equipoImg from "@/images/fundadora.avif"
 import presenciaImg from "@/images/presencia.avif"
 
 export default function About() {
