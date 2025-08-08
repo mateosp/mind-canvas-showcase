@@ -51,6 +51,17 @@ export default function Opinion() {
   const handleCloseColumn = () => {
     setSelectedColumn(null)
     setShowFanView(true)
+    
+    // Scroll suave al inicio de la sección después de un pequeño delay
+    setTimeout(() => {
+      const section = document.querySelector('section[class*="py-20"]')
+      if (section) {
+        section.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
+    }, 100)
   }
 
   if (isLoading) {
@@ -78,7 +89,7 @@ export default function Opinion() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <h1 className="text-5xl md:text-7xl font-semibold animate-fade-in text-foreground">
-              Columna de <span className="bg-gradient-hero bg-clip-text text-transparent">Opinión</span>
+              Columnas de <span className="bg-gradient-hero bg-clip-text text-transparent">Opinión</span>
             </h1>
             <p className="text-xl md:text-2xl font-light animate-scale-in text-black">
               Análisis y crítica especializada del mundo artístico
@@ -97,50 +108,9 @@ export default function Opinion() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Sidebar - Selector oscuro */}
-              <div className="order-1 lg:order-2 lg:col-span-1">
-                <div className="bg-gray-900 text-white rounded-lg p-6 lg:sticky lg:top-8">
-                  <div className="flex items-center mb-6">
-                    <div className="w-1 h-6 bg-blue-500 mr-3"></div>
-                    <h3 className="text-lg font-bold">Las {columns.length} columnas más leídas</h3>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {columns.map((column, index) => (
-                      <Button
-                        key={column.id}
-                        variant="ghost"
-                        className={`w-full justify-between p-3 h-auto text-left ${
-                          selectedColumn?.id === column.id 
-                            ? 'bg-blue-600 text-white' 
-                            : 'text-white hover:bg-gray-800'
-                        }`}
-                        onClick={() => handleColumnSelect(column)}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-medium opacity-70 flex-shrink-0">
-                              {String(index + 1).padStart(2, '0')}
-                            </span>
-                            <span className="text-sm font-semibold truncate block">
-                              {column.titulo}
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-2xl opacity-50 flex-shrink-0 ml-2">"</span>
-                      </Button>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-6 pt-4 border-t border-gray-700">
-                    <p className="text-xs text-gray-400 text-center">Publicidad</p>
-                  </div>
-                </div>
-              </div>
-
+            <div className="max-w-4xl mx-auto">
               {/* Main Content Area */}
-              <div className="order-2 lg:order-1 lg:col-span-3">
+              <div>
                 <AnimatePresence mode="wait">
                   {showFanView ? (
                     <motion.div
