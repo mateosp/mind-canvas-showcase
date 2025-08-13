@@ -152,13 +152,14 @@ export default function Services() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-wrap justify-center gap-8">
             {serviciosAdicionales.map((servicio, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
                 animate={adicionalesAnimation.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="w-full sm:w-80 lg:w-96"
               >
                 <Card className="h-full group hover:shadow-artistic transition-all duration-300 hover:scale-105 border-none bg-white/10 backdrop-blur-sm">
                   <CardContent className="p-8 text-center h-full flex flex-col justify-between space-y-4">

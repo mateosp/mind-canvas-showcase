@@ -4,10 +4,10 @@ import { Link } from "react-router-dom"
 export function Footer() {
   return (
     <footer className="bg-card border-t">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
+      <div className="w-[95%] mx-auto px-4 py-12">
+        <div className="flex flex-col lg:flex-row justify-between gap-8">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:w-1/5">
             <h3 className="text-2xl font-bold bg-gradient-card bg-clip-text text-transparent">
               OJOS DE ARTE
             </h3>
@@ -20,7 +20,7 @@ export function Footer() {
           </div>
 
           {/* Navigation - Column 1 */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:w-1/6">
             <h4 className="font-semibold">Navegación</h4>
             <div className="space-y-2">
               <Link to="/" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -39,7 +39,7 @@ export function Footer() {
           </div>
 
           {/* Navigation - Column 2 */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:w-1/6">
             <h4 className="font-semibold">Secciones</h4>
             <div className="space-y-2">
               <Link to="/sections/artists" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -58,7 +58,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:w-1/5">
             <h4 className="font-semibold">Contacto</h4>
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -77,7 +77,7 @@ export function Footer() {
           </div>
 
           {/* Redes Sociales */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:w-1/6">
             <h4 className="font-semibold">Redes Sociales</h4>
             <div className="space-y-2">
               <a 
