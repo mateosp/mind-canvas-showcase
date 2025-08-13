@@ -31,13 +31,15 @@ export default function Services() {
           Ademas, te compartimos los mejores tips para viajar con estilo y estrategia: promociones, descuentos y secretos que solo se descubren cuando se mira con ojos de arte.
         </>
       ),
-      image: viajesImg
+      image: viajesImg,
+      showContactButton: true
     },
     {
       icon: <Heart className="h-12 w-12" />,
       title: "Asesorías",
       content: "¿Eres amante del arte, coleccionista o gestor cultural en busca de guia experta y mirada sensible? Te acompañamos en cada paso con asesoria personalizada que une estrategia, estetica y proposito.",
-      image: asesoriasImg
+      image: asesoriasImg,
+      showContactButton: false
     }
   ]
 
@@ -114,6 +116,19 @@ export default function Services() {
                     <p className="text-lg text-muted-foreground leading-relaxed">
                       {servicio.content}
                     </p>
+                    {servicio.showContactButton && (
+                      <div className="flex justify-center pt-4">
+                        <Link to="/contact">
+                          <Button 
+                            size="lg" 
+                            variant="default" 
+                            className="min-w-[200px] font-light bg-gradient-card hover:shadow-artistic transition-all duration-300"
+                          >
+                            Contáctanos
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                   <div className="lg:w-1/2">
                     <div className="w-full h-80 bg-gradient-card rounded-2xl overflow-hidden relative shadow-card hover:shadow-artistic transition-all duration-500 group">
@@ -171,6 +186,13 @@ export default function Services() {
                       <p className="text-white/80 text-sm leading-relaxed">
                         {servicio.content}
                       </p>
+                    </div>
+                    <div className="pt-4">
+                      <Link to="/contact">
+                        <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
+                          Contáctanos
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
