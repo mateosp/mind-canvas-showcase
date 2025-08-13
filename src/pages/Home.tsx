@@ -29,13 +29,13 @@ export default function Home() {
     {
       icon: <Globe className="h-8 w-8" />,
       title: "Viajes",
-      description: "Experiencias artísticas únicas alrededor del mundo con guías especializados.",
+      description: "Creamos experiencias únicas alrededor del mundo con itinerarios personalizados.",
       image: viajesImg
     },
     {
       icon: <Heart className="h-8 w-8" />,
       title: "Asesorías",
-      description: "Consultoría personalizada para coleccionistas y amantes del arte.",
+      description: "Consultoría personalizada para amantes del arte, coleccionistas y actores culturales.",
       isExpandable: true,
       image: asesoriasImg
     }
@@ -62,19 +62,19 @@ export default function Home() {
   const availableSections = [
     {
       title: "Artistas",
-      description: "Descubre talento emergente y establecido",
+      description: "Descubre talento latinoamericano",
       image: artistasImg,
       href: "/sections/artists"
     },
     {
       title: "Museos",
-      description: "Explora las mejores galerías y museos",
+      description: "Explora los mejores museos en Latinoamérica",
       image: museosImg,
       href: "/sections/museums"
     },
     {
       title: "Principales eventos",
-      description: "No te pierdas los eventos más importantes",
+      description: "No te pierdas los eventos más importantes de arte visual",
       image: eventosImg,
       href: "/sections/events"
     },

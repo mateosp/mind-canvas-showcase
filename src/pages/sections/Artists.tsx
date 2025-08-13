@@ -41,13 +41,7 @@ export default function Artists() {
             <div 
               className="bg-white rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.15)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-all duration-500 hover:scale-[1.02] cursor-pointer"
               onClick={() => {
-                if (window.location.pathname === '/') {
-                  document.getElementById('nuestros-servicios')?.scrollIntoView({ 
-                    behavior: 'smooth' 
-                  })
-                } else {
-                  window.location.href = '/#nuestros-servicios'
-                }
+                window.location.href = '/contact'
               }}
             >
               <div className="flex items-center justify-center mb-4">
@@ -59,7 +53,7 @@ export default function Artists() {
               </div>
               <p className="text-lg mb-6 leading-relaxed">
                 <span className="text-black font-semibold hover:text-gray-700 transition-all duration-300">
-                  Te ofrecemos consultorías personalizadas para coleccionistas y amantes del arte.
+                ¿Inicias o amplías tu colección? Te guiamos para que cada pieza conecte con tu espacio, tu mirada y tu relato. 
                 </span>
               </p>
               <div className="flex justify-center">

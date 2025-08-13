@@ -25,19 +25,19 @@ export default function About() {
     {
       icon: <Eye className="h-12 w-12" />,
       title: "Nuestra Misión",
-      content: "En Ojos de Arte, creemos que el arte es un puente entre culturas, una forma poderosa de transmitir historias y crear conexiones humanas profundas. Nuestra misión es democratizar el acceso al arte latinoamericano y crear espacios donde la creatividad y la expresión cultural puedan florecer.",
+      content: "En O.D.A, creemos que el arte es un puente entre culturas, una forma poderosa de transmitir historias y crear conexiones humanas profundas. Nuestra misión es abrir caminos para que el arte latinoamericano dialogue con el mundo desde la experiencia viva. Buscamos democratizar su acceso y cultivar espacios donde la expresión cultural florezca con sentido, profundidad y resonancia. Porque mirar con ojos de arte es, ante todo, una invitación a sentir, pensar y transformar.",
       image: misionImg
     },
     {
       icon: <Users className="h-12 w-12" />,
       title: "Una Mirada a La Fundadora",
-      content: "Somos un equipo multidisciplinario de profesionales apasionados por el arte y la cultura. Contamos con curadores, historiadores del arte, gestores culturales y expertos en comunicación que trabajan juntos para ofrecer experiencias excepcionales y contenido de calidad.",
+      content: "Natalia Aguilar Yarala, es arquitecta con un Máster en diagnóstico del estado de conservación del patrimonio histórico, y formación complementaria en Historia del arte y Curaduría de arte. Su trayectoria se ha desarrollado en el cruce entre lo urbano, lo normativo y lo cultural, con especial énfasis en proyectos en sectores patrimoniales. Especialista en análisis geoespacial mediante sistemas GIS, Natalia aplica herramientas técnicas para leer el territorio como una trama de memorias, relaciones y decisiones informadas. Esteta por amor y convicción, fundó Ojos de Arte como una plataforma para acercar el arte latinoamericano a las comunidades, creando puentes entre la expresión artística y el tejido social. Su mirada curatorial combina precisión técnica con sensibilidad poética, invitando siempre a mirar con ojos de arte. ",
       image: equipoImg
     },
     {
       icon: <MapPin className="h-12 w-12" />,
       title: "Nuestra Presencia",
-      content: "Con base en América Latina pero con una visión global, conectamos artistas locales con audiencias internacionales. Trabajamos en todo el continente Americano, creando redes de colaboración que trascienden fronteras geográficas y culturales.",
+      content: "Con base en Barranquilla, Colombia, pero con una visión global. Trabajamos en todo el continente Americano, creando redes de colaboración que trascienden fronteras geográficas y culturales.",
       image: presenciaImg
     }
   ]

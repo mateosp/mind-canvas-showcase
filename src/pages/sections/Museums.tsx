@@ -15,7 +15,7 @@ export default function Museums() {
               Museos
             </h1>
             <p className="text-xl md:text-2xl font-light animate-scale-in">
-              Explora las mejores galerías y museos de la región
+            Explora los mejores museos de la región y descubre su historia
             </p>
           </div>
         </div>
@@ -45,13 +45,7 @@ export default function Museums() {
             <div 
               className="bg-white rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.15)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-all duration-500 hover:scale-[1.02] cursor-pointer"
               onClick={() => {
-                if (window.location.pathname === '/') {
-                  document.getElementById('nuestros-servicios')?.scrollIntoView({ 
-                    behavior: 'smooth' 
-                  })
-                } else {
-                  window.location.href = '/#nuestros-servicios'
-                }
+                window.location.href = '/contact'
               }}
             >
               <div className="flex items-center justify-center mb-4">
@@ -63,7 +57,7 @@ export default function Museums() {
               </div>
               <p className="text-lg mb-6 leading-relaxed">
                 <span className="text-black font-semibold hover:text-gray-700 transition-all duration-300">
-                Te ofrecemos experiencias artísticas únicas alrededor del mundo con guías especializados
+                ¿Listo para explorar el mundo con ojos de arte? Te acompañamos con itinerarios curados, pensados para inspirarte. 
                 </span>
               </p>
               <div className="flex justify-center">
