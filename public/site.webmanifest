@@ -1,0 +1,22 @@
+{
+  "name": "Ojos de Arte",
+  "short_name": "Ojos de Arte",
+  "description": "Arte - Identidad - Narrativa. Conectando el arte latinoamericano con el mundo.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+} 
