@@ -1,11 +1,11 @@
-import { Facebook, Twitter, Instagram, Mail, MapPin, Phone } from "lucide-react"
+import { Linkedin, Mail, MapPin, Phone } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function Footer() {
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold bg-gradient-card bg-clip-text text-transparent">
@@ -32,7 +32,7 @@ export function Footer() {
               <Link to="/contact" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Contacto
               </Link>
-              <Link to="/#nuestros-servicios" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/services" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Servicios
               </Link>
             </div>
@@ -73,6 +73,21 @@ export function Footer() {
                 <MapPin className="h-4 w-4" />
                 <span>Barranquilla, Colombia</span>
               </div>
+            </div>
+          </div>
+
+          {/* Redes Sociales */}
+          <div className="space-y-4">
+            <h4 className="font-semibold">Redes Sociales</h4>
+            <div className="space-y-2">
+              <a 
+                href="https://www.linkedin.com/in/nataliaaguilaryarala" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block p-2 bg-black rounded-full hover:bg-gray-800 transition-colors duration-300"
+              >
+                <Linkedin className="h-3 w-3 text-white" />
+              </a>
             </div>
           </div>
         </div>
