@@ -26,9 +26,9 @@ export default function Services() {
       title: "Viajes",
       content: (
         <>
-          ¿Planeando tu proxima aventura? Te ayudamos a convertirla en una experiencia curada, pensada especialmente para ti.
+          ¿Planeando tu próxima aventura? Te ayudamos a convertirla en una experiencia curada, pensada especialmente para ti.
           Diseñamos itinerarios que giran en torno al arte, la cultura y tus intereses personales, desde museos escondidos hasta recorridos que cuentan historias locales. <br /> <br />
-          Ademas, te compartimos los mejores tips para viajar con estilo y estrategia: promociones, descuentos y secretos que solo se descubren cuando se mira con ojos de arte.
+          Además, te compartimos los mejores tips para viajar con estilo y estrategia: promociones, descuentos y secretos que solo se descubren cuando se mira con ojos de arte.
         </>
       ),
       image: viajesImg,
@@ -37,7 +37,7 @@ export default function Services() {
     {
       icon: <Heart className="h-12 w-12" />,
       title: "Asesorías",
-      content: "¿Eres amante del arte, coleccionista o gestor cultural en busca de guia experta y mirada sensible? Te acompañamos en cada paso con asesoria personalizada que une estrategia, estetica y proposito.",
+      content: "¿Eres amante del arte, coleccionista o gestor cultural en busca de guía experta y mirada sensible? Te acompañamos en cada paso con asesoría personalizada que une estrategia, estética y propósito.",
       image: asesoriasImg,
       showContactButton: false
     }
