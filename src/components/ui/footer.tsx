@@ -84,7 +84,7 @@ export function Footer() {
                 href="https://www.linkedin.com/in/nataliaaguilaryarala" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-block p-2 bg-black rounded-full hover:bg-gray-800 transition-colors duration-300"
+                className="inline-block p-2 rounded-full bg-gradient-hero hover:opacity-90 transition-opacity duration-300"
               >
                 <Linkedin className="h-3 w-3 text-white" />
               </a>
