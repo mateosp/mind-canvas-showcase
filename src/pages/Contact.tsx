@@ -34,7 +34,7 @@ export default function Contact() {
       
       // Enviar email usando EmailJS
       const result = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_krgqatg', // Service ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_3ahwk6o', // Service ID
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_7yfhk4g', // Template ID
         templateParams,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'NGPERyo4N5cFqn6zQ' // Public Key
@@ -69,14 +69,14 @@ export default function Contact() {
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email",
-      content: "info@ojosdearte.com",
+      content: "natalia@ojosdearte.com",
       description: "Escríbenos cualquier duda"
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Teléfono",
       content: "+57 (304) 346-2850",
-      description: "Conéctate conmigo por este número"
+      description: "Contacta a nuestro equipo"
     },
     {
       icon: <MapPin className="h-6 w-6" />,
@@ -87,7 +87,7 @@ export default function Contact() {
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Horarios",
-      content: "Lun - Vie: 9AM - 6PM",
+      content: "Lun - Vie: 8AM - 6PM",
       description: "Horario estándar de Colombia"
     }
   ]

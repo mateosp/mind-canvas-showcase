@@ -160,7 +160,7 @@ export default function Services() {
           className="container mx-auto px-4 relative z-10"
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">Servicios Especializados</h2>
+            <h2 className="text-4xl font-bold mb-4 text-white">Asesorías Especializadas</h2>
             <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
             <p className="text-white/95 mt-6 max-w-2xl mx-auto">
               Complementamos nuestros servicios principales con soluciones especializadas para satisfacer todas tus necesidades artísticas
