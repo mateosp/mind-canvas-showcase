@@ -1,4 +1,4 @@
-import { Linkedin, Mail, MapPin, Phone } from "lucide-react"
+import { Linkedin, Mail, MapPin, Phone, Instagram } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function Footer() {
@@ -79,7 +79,7 @@ export function Footer() {
           {/* Redes Sociales */}
           <div className="space-y-4 lg:w-1/6">
             <h4 className="font-semibold">Redes Sociales</h4>
-            <div className="space-y-2">
+            <div className="flex space-x-2">
               <a 
                 href="https://www.linkedin.com/in/nataliaaguilaryarala" 
                 target="_blank" 
@@ -87,6 +87,14 @@ export function Footer() {
                 className="inline-block p-2 rounded-full bg-gradient-hero hover:opacity-90 transition-opacity duration-300"
               >
                 <Linkedin className="h-3 w-3 text-white" />
+              </a>
+              <a 
+                href="https://www.instagram.com/ojosdearte.oda?igsh=MXRib3hjMGc2dmd1cg%3D%3D&utm_source=qr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block p-2 rounded-full bg-gradient-hero hover:opacity-90 transition-opacity duration-300"
+              >
+                <Instagram className="h-3 w-3 text-white" />
               </a>
             </div>
           </div>
