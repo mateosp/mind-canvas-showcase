@@ -13,6 +13,7 @@ interface OpinionColumn {
   titulo: string
   descripcion: string
   createdAt: Date
+  images?: string[] // Added images property
 }
 
 export default function Opinion() {
@@ -32,7 +33,8 @@ export default function Opinion() {
       const columnsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate() || new Date()
+        createdAt: doc.data().createdAt?.toDate() || new Date(),
+        images: doc.data().images || []
       })) as OpinionColumn[]
       
       setColumns(columnsData)
@@ -151,6 +153,20 @@ export default function Opinion() {
                                 <p className="text-gray-600 line-clamp-2 leading-relaxed">
                                   {column.descripcion.substring(0, 150)}...
                                 </p>
+                                
+                                {/* Show images indicator */}
+                                {column.images && column.images.length > 0 && (
+                                  <div className="flex items-center gap-2 mt-3">
+                                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                      <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                      </svg>
+                                    </div>
+                                    <span className="text-xs text-blue-600 font-medium">
+                                      {column.images.length} imagen{column.images.length !== 1 ? 'es' : ''} adjunta{column.images.length !== 1 ? 's' : ''}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               <div className="ml-4 flex-shrink-0">
                                 <div className="w-12 h-12 bg-gradient-card rounded-full flex items-center justify-center text-white">
@@ -204,6 +220,33 @@ export default function Opinion() {
                             ))}
                           </div>
                         </motion.div>
+
+                        {/* Images Section */}
+                        {selectedColumn.images && selectedColumn.images.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.7 }}
+                            className="mt-8 space-y-4"
+                          >
+                            <div className="flex justify-center gap-6 flex-wrap">
+                              {selectedColumn.images.map((image, index) => (
+                                <div key={index} className="group">
+                                  <img
+                                    src={image}
+                                    alt={`Imagen ${index + 1} de ${selectedColumn.titulo}`}
+                                    className="w-48 h-48 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 cursor-pointer hover:scale-110 shadow-md hover:shadow-lg bg-gray-50"
+                                    onError={(e) => {
+                                      // Fallback para imágenes que no cargan
+                                      const target = e.target as HTMLImageElement;
+                                      target.style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
                         
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}

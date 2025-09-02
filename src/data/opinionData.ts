@@ -7,6 +7,7 @@ export interface Opinion {
   date: string;
   source: string;
   avatar?: string;
+  images?: string[]; // Array de URLs de imágenes (máximo 3)
 }
 
 export const pressOpinions: Opinion[] = [
@@ -18,7 +19,8 @@ export const pressOpinions: Opinion[] = [
     rating: 5,
     date: "2024-01-15",
     source: "El País Cultural",
-    avatar: "/avatars/maria.jpg"
+    avatar: "/avatars/maria.jpg",
+    images: ["/images/exposicion1.jpg", "/images/exposicion2.jpg"]
   },
   {
     id: "2",
@@ -38,7 +40,8 @@ export const pressOpinions: Opinion[] = [
     rating: 4,
     date: "2024-01-10",
     source: "Cultura Digital",
-    avatar: "/avatars/ana.jpg"
+    avatar: "/avatars/ana.jpg",
+    images: ["/images/tecnologia1.jpg"]
   },
   {
     id: "4",
@@ -58,7 +61,8 @@ export const pressOpinions: Opinion[] = [
     rating: 4,
     date: "2024-01-05",
     source: "Galería Moderna",
-    avatar: "/avatars/sofia.jpg"
+    avatar: "/avatars/sofia.jpg",
+    images: ["/images/galeria1.jpg", "/images/galeria2.jpg", "/images/galeria3.jpg"]
   }
 ];
 
@@ -71,7 +75,8 @@ export const columnOpinions: Opinion[] = [
     rating: 5,
     date: "2024-01-20",
     source: "Revista de Historia del Arte",
-    avatar: "/avatars/elena.jpg"
+    avatar: "/avatars/elena.jpg",
+    images: ["/images/historia1.jpg", "/images/historia2.jpg"]
   },
   {
     id: "2",
@@ -91,7 +96,8 @@ export const columnOpinions: Opinion[] = [
     rating: 4,
     date: "2024-01-16",
     source: "Curaduría y Museología",
-    avatar: "/avatars/carmen.jpg"
+    avatar: "/avatars/carmen.jpg",
+    images: ["/images/curatorial1.jpg"]
   },
   {
     id: "4",
@@ -111,6 +117,7 @@ export const columnOpinions: Opinion[] = [
     rating: 4,
     date: "2024-01-12",
     source: "Crítica Artística",
-    avatar: "/avatars/isabel.jpg"
+    avatar: "/avatars/isabel.jpg",
+    images: ["/images/critica1.jpg", "/images/critica2.jpg", "/images/critica3.jpg"]
   }
 ]; 

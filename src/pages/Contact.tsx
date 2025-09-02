@@ -69,7 +69,7 @@ export default function Contact() {
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email",
-      content: "natalia@ojosdearte.com",
+      content: "info@ojosdearte.com",
       description: "Escríbenos cualquier duda"
     },
     {

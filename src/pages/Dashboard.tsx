@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Save, X, Mail } from "lucide-react"
-import { auth, db } from "@/config/firebase"
+import { Plus, Edit, Trash2, Save, X, Mail, Upload, Image as ImageIcon } from "lucide-react"
+import { auth, db, storage } from "@/config/firebase"
 import { 
   collection, 
   addDoc, 
@@ -17,6 +17,7 @@ import {
   orderBy,
   query
 } from "firebase/firestore"
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useNavigate, Link } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -25,12 +26,15 @@ interface OpinionColumn {
   titulo: string
   descripcion: string
   createdAt: Date
+  images?: string[]
 }
 
 export default function Dashboard() {
   const [columns, setColumns] = useState<OpinionColumn[]>([])
   const [titulo, setTitulo] = useState("")
   const [descripcion, setDescripcion] = useState("")
+  const [selectedImages, setSelectedImages] = useState<File[]>([])
+  const [imageUrls, setImageUrls] = useState<string[]>([])
   const [isEditing, setIsEditing] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -61,7 +65,8 @@ export default function Dashboard() {
       const columnsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate() || new Date()
+        createdAt: doc.data().createdAt?.toDate() || new Date(),
+        images: doc.data().images || []
       })) as OpinionColumn[]
       setColumns(columnsData)
       console.log("Columnas cargadas:", columnsData.length)
@@ -86,6 +91,55 @@ export default function Dashboard() {
     }
   }
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    
+    if (files.length > 3) {
+      toast({
+        title: "Error",
+        description: "Máximo 3 imágenes permitidas",
+        variant: "destructive"
+      })
+      return
+    }
+
+    // Validar tipos de archivo
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    const invalidFiles = files.filter(file => !validTypes.includes(file.type))
+    
+    if (invalidFiles.length > 0) {
+      toast({
+        title: "Error",
+        description: "Solo se permiten archivos JPG, PNG y WebP",
+        variant: "destructive"
+      })
+      return
+    }
+
+    setSelectedImages(files)
+  }
+
+  const uploadImages = async (): Promise<string[]> => {
+    if (selectedImages.length === 0) return []
+    
+    const uploadPromises = selectedImages.map(async (file) => {
+      const timestamp = Date.now()
+      const fileName = `${timestamp}_${file.name}`
+      const storageRef = ref(storage, `opinion_images/${fileName}`)
+      
+      try {
+        const snapshot = await uploadBytes(storageRef, file)
+        const downloadURL = await getDownloadURL(snapshot.ref)
+        return downloadURL
+      } catch (error) {
+        console.error("Error uploading image:", error)
+        throw error
+      }
+    })
+
+    return Promise.all(uploadPromises)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!titulo.trim() || !descripcion.trim()) {
@@ -102,14 +156,25 @@ export default function Dashboard() {
       console.log("Iniciando guardado de columna...")
       console.log("Usuario autenticado:", user)
       
+      let imageUrls: string[] = []
+      if (selectedImages.length > 0) {
+        imageUrls = await uploadImages()
+      }
+      
       if (isEditing) {
         // Update existing column
         console.log("Actualizando columna existente:", isEditing)
-        await updateDoc(doc(db, "columnas_opinion", isEditing), {
+        const updateData: any = {
           titulo: titulo.trim(),
           descripcion: descripcion.trim(),
           updatedAt: new Date()
-        })
+        }
+        
+        if (imageUrls.length > 0) {
+          updateData.images = imageUrls
+        }
+        
+        await updateDoc(doc(db, "columnas_opinion", isEditing), updateData)
         toast({
           title: "Éxito",
           description: "Columna de opinión actualizada correctamente"
@@ -121,7 +186,8 @@ export default function Dashboard() {
         const docRef = await addDoc(collection(db, "columnas_opinion"), {
           titulo: titulo.trim(),
           descripcion: descripcion.trim(),
-          createdAt: new Date()
+          createdAt: new Date(),
+          images: imageUrls
         })
         console.log("Columna creada con ID:", docRef.id)
         toast({
@@ -132,6 +198,8 @@ export default function Dashboard() {
       
       setTitulo("")
       setDescripcion("")
+      setSelectedImages([])
+      setImageUrls([])
       fetchColumns()
     } catch (error: any) {
       console.error("Error detallado:", error)
@@ -161,6 +229,8 @@ export default function Dashboard() {
   const handleEdit = (column: OpinionColumn) => {
     setTitulo(column.titulo)
     setDescripcion(column.descripcion)
+    setImageUrls(column.images || [])
+    setSelectedImages([])
     setIsEditing(column.id)
   }
 
@@ -170,6 +240,20 @@ export default function Dashboard() {
     }
 
     try {
+      // Obtener la columna para eliminar las imágenes
+      const column = columns.find(col => col.id === id)
+      if (column && column.images && column.images.length > 0) {
+        // Eliminar imágenes del storage
+        for (const imageUrl of column.images) {
+          try {
+            const imageRef = ref(storage, imageUrl)
+            await deleteObject(imageRef)
+          } catch (error) {
+            console.error("Error deleting image:", error)
+          }
+        }
+      }
+
       await deleteDoc(doc(db, "columnas_opinion", id))
       toast({
         title: "Éxito",
@@ -189,7 +273,17 @@ export default function Dashboard() {
   const handleCancel = () => {
     setTitulo("")
     setDescripcion("")
+    setSelectedImages([])
+    setImageUrls([])
     setIsEditing(null)
+  }
+
+  const removeImage = (index: number) => {
+    setImageUrls(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const removeSelectedImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index))
   }
 
   // Mostrar loading mientras verifica autenticación
@@ -300,6 +394,92 @@ export default function Dashboard() {
                       required
                     />
                   </div>
+
+                  {/* Image Upload Section */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium flex items-center gap-2">
+                      <ImageIcon className="h-4 w-4" />
+                      Imágenes (0-3 máximo)
+                    </Label>
+                    
+                    {/* File Input */}
+                    <div className="flex items-center gap-3">
+                      <Input
+                        id="images"
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleImageSelect}
+                        className="flex-1"
+                        disabled={selectedImages.length >= 3}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById('images')?.click()}
+                        disabled={selectedImages.length >= 3}
+                        className="flex items-center gap-2"
+                      >
+                        <Upload className="h-4 w-4" />
+                        Seleccionar
+                      </Button>
+                    </div>
+
+                    {/* Selected Images Preview */}
+                    {selectedImages.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground">
+                          Imágenes seleccionadas ({selectedImages.length}/3):
+                        </p>
+                        <div className="flex gap-2 flex-wrap">
+                          {selectedImages.map((file, index) => (
+                            <div key={index} className="relative group">
+                              <img
+                                src={URL.createObjectURL(file)}
+                                alt={`Preview ${index + 1}`}
+                                className="w-16 h-16 object-cover rounded border"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeSelectedImage(index)}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Existing Images (when editing) */}
+                    {isEditing && imageUrls.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground">
+                          Imágenes existentes:
+                        </p>
+                        <div className="flex gap-2 flex-wrap">
+                          {imageUrls.map((url, index) => (
+                            <div key={index} className="relative group">
+                              <img
+                                src={url}
+                                alt={`Imagen existente ${index + 1}`}
+                                className="w-16 h-16 object-cover rounded border"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeImage(index)}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <Button 
@@ -363,6 +543,17 @@ export default function Dashboard() {
                             <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-2">
                               {column.descripcion}
                             </p>
+                            
+                            {/* Show images count */}
+                            {column.images && column.images.length > 0 && (
+                              <div className="flex items-center gap-2 mb-2">
+                                <ImageIcon className="h-3 w-3 text-muted-foreground" />
+                                <span className="text-xs text-muted-foreground">
+                                  {column.images.length} imagen{column.images.length !== 1 ? 'es' : ''}
+                                </span>
+                              </div>
+                            )}
+                            
                             <p className="text-xs text-muted-foreground">
                               Creada: {column.createdAt.toLocaleDateString()}
                             </p>
