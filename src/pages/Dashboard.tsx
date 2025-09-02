@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Save, X, Mail, Upload, Image as ImageIcon } from "lucide-react"
+import { Plus, Edit, Trash2, Save, X, Mail, Upload, Image as ImageIcon, Palette, FileText, MapPin } from "lucide-react"
 import { auth, db, storage } from "@/config/firebase"
 import { 
   collection, 
@@ -29,12 +29,36 @@ interface OpinionColumn {
   images?: string[]
 }
 
+interface Artist {
+  id: string
+  titulo: string
+  ubicacion: string
+  texto: string
+  imagen: string
+  createdAt: Date
+}
+
+type ContentType = 'opinion' | 'artists'
+
 export default function Dashboard() {
+  const [contentType, setContentType] = useState<ContentType>('opinion')
+  
+  // Opinion Columns State
   const [columns, setColumns] = useState<OpinionColumn[]>([])
   const [titulo, setTitulo] = useState("")
   const [descripcion, setDescripcion] = useState("")
   const [selectedImages, setSelectedImages] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<string[]>([])
+  
+  // Artists State
+  const [artists, setArtists] = useState<Artist[]>([])
+  const [artistTitulo, setArtistTitulo] = useState("")
+  const [artistUbicacion, setArtistUbicacion] = useState("")
+  const [artistTexto, setArtistTexto] = useState("")
+  const [selectedArtistImage, setSelectedArtistImage] = useState<File | null>(null)
+  const [artistImageUrl, setArtistImageUrl] = useState<string>("")
+  
+  // Common State
   const [isEditing, setIsEditing] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -46,22 +70,24 @@ export default function Dashboard() {
       setIsAuthChecking(false)
       if (user) {
         setUser(user)
-        fetchColumns()
+        if (contentType === 'opinion') {
+          fetchColumns()
+        } else {
+          fetchArtists()
+        }
       } else {
-        // Usuario no autenticado, redirigir al login
         navigate("/login")
       }
     })
 
     return () => unsubscribe()
-  }, [navigate])
+  }, [navigate, contentType])
 
+  // Fetch functions
   const fetchColumns = async () => {
     try {
-      console.log("Iniciando fetch de columnas...")
       const q = query(collection(db, "columnas_opinion"), orderBy("createdAt", "desc"))
       const querySnapshot = await getDocs(q)
-      console.log("Documentos encontrados:", querySnapshot.docs.length)
       const columnsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
@@ -69,28 +95,65 @@ export default function Dashboard() {
         images: doc.data().images || []
       })) as OpinionColumn[]
       setColumns(columnsData)
-      console.log("Columnas cargadas:", columnsData.length)
     } catch (error: any) {
       console.error("Error fetching columns:", error)
-      console.error("Código de error:", error.code)
-      console.error("Mensaje de error:", error.message)
-      
-      let errorMessage = "No se pudieron cargar las columnas de opinión"
-      
-      if (error.code === "permission-denied") {
-        errorMessage = "No tienes permisos para leer la base de datos. Verifica las reglas de Firestore."
-      } else if (error.code === "unavailable") {
-        errorMessage = "La base de datos no está disponible. Verifica tu conexión a internet."
-      }
-      
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "No se pudieron cargar las columnas de opinión",
         variant: "destructive"
       })
     }
   }
 
+  const fetchArtists = async () => {
+    try {
+      const q = query(collection(db, "artistas"), orderBy("createdAt", "desc"))
+      const querySnapshot = await getDocs(q)
+      const artistsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date()
+      })) as Artist[]
+      setArtists(artistsData)
+    } catch (error: any) {
+      console.error("Error fetching artists:", error)
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los artistas",
+        variant: "destructive"
+      })
+    }
+  }
+
+  // Handle content type change
+  const handleContentTypeChange = (type: ContentType) => {
+    setContentType(type)
+    setIsEditing(null)
+    clearForm()
+    if (type === 'opinion') {
+      fetchColumns()
+    } else {
+      fetchArtists()
+    }
+  }
+
+  // Clear form based on content type
+  const clearForm = () => {
+    if (contentType === 'opinion') {
+      setTitulo("")
+      setDescripcion("")
+      setSelectedImages([])
+      setImageUrls([])
+    } else {
+      setArtistTitulo("")
+      setArtistUbicacion("")
+      setArtistTexto("")
+      setSelectedArtistImage(null)
+      setArtistImageUrl("")
+    }
+  }
+
+  // Image handling for opinion columns
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     
@@ -103,7 +166,6 @@ export default function Dashboard() {
       return
     }
 
-    // Validar tipos de archivo
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
     const invalidFiles = files.filter(file => !validTypes.includes(file.type))
     
@@ -140,7 +202,43 @@ export default function Dashboard() {
     return Promise.all(uploadPromises)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Image handling for artists
+  const handleArtistImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    if (!validTypes.includes(file.type)) {
+      toast({
+        title: "Error",
+        description: "Solo se permiten archivos JPG, PNG y WebP",
+        variant: "destructive"
+      })
+      return
+    }
+
+    setSelectedArtistImage(file)
+  }
+
+  const uploadArtistImage = async (): Promise<string> => {
+    if (!selectedArtistImage) return ""
+    
+    const timestamp = Date.now()
+    const fileName = `${timestamp}_${selectedArtistImage.name}`
+    const storageRef = ref(storage, `artist_images/${fileName}`)
+    
+    try {
+      const snapshot = await uploadBytes(storageRef, selectedArtistImage)
+      const downloadURL = await getDownloadURL(snapshot.ref)
+      return downloadURL
+    } catch (error) {
+      console.error("Error uploading artist image:", error)
+      throw error
+    }
+  }
+
+  // Submit handlers
+  const handleOpinionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!titulo.trim() || !descripcion.trim()) {
       toast({
@@ -153,17 +251,12 @@ export default function Dashboard() {
 
     setIsLoading(true)
     try {
-      console.log("Iniciando guardado de columna...")
-      console.log("Usuario autenticado:", user)
-      
       let imageUrls: string[] = []
       if (selectedImages.length > 0) {
         imageUrls = await uploadImages()
       }
       
       if (isEditing) {
-        // Update existing column
-        console.log("Actualizando columna existente:", isEditing)
         const updateData: any = {
           titulo: titulo.trim(),
           descripcion: descripcion.trim(),
@@ -181,44 +274,25 @@ export default function Dashboard() {
         })
         setIsEditing(null)
       } else {
-        // Add new column
-        console.log("Creando nueva columna...")
-        const docRef = await addDoc(collection(db, "columnas_opinion"), {
+        await addDoc(collection(db, "columnas_opinion"), {
           titulo: titulo.trim(),
           descripcion: descripcion.trim(),
           createdAt: new Date(),
           images: imageUrls
         })
-        console.log("Columna creada con ID:", docRef.id)
         toast({
           title: "Éxito",
           description: "Columna de opinión creada correctamente"
         })
       }
       
-      setTitulo("")
-      setDescripcion("")
-      setSelectedImages([])
-      setImageUrls([])
+      clearForm()
       fetchColumns()
     } catch (error: any) {
-      console.error("Error detallado:", error)
-      console.error("Código de error:", error.code)
-      console.error("Mensaje de error:", error.message)
-      
-      let errorMessage = "No se pudo guardar la columna de opinión"
-      
-      if (error.code === "permission-denied") {
-        errorMessage = "No tienes permisos para escribir en la base de datos. Verifica las reglas de Firestore."
-      } else if (error.code === "unavailable") {
-        errorMessage = "La base de datos no está disponible. Verifica tu conexión a internet."
-      } else if (error.code === "unauthenticated") {
-        errorMessage = "No estás autenticado. Por favor, inicia sesión nuevamente."
-      }
-      
+      console.error("Error:", error)
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "No se pudo guardar la columna de opinión",
         variant: "destructive"
       })
     } finally {
@@ -226,7 +300,76 @@ export default function Dashboard() {
     }
   }
 
-  const handleEdit = (column: OpinionColumn) => {
+  const handleArtistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!artistTitulo.trim() || !artistUbicacion.trim() || !artistTexto.trim()) {
+      toast({
+        title: "Error",
+        description: "Por favor completa todos los campos",
+        variant: "destructive"
+      })
+      return
+    }
+
+    if (!selectedArtistImage && !artistImageUrl) {
+      toast({
+        title: "Error",
+        description: "La imagen es obligatoria para los artistas",
+        variant: "destructive"
+      })
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      let imageUrl = artistImageUrl
+      if (selectedArtistImage) {
+        imageUrl = await uploadArtistImage()
+      }
+      
+      if (isEditing) {
+        await updateDoc(doc(db, "artistas", isEditing), {
+          titulo: artistTitulo.trim(),
+          ubicacion: artistUbicacion.trim(),
+          texto: artistTexto.trim(),
+          imagen: imageUrl,
+          updatedAt: new Date()
+        })
+        toast({
+          title: "Éxito",
+          description: "Artista actualizado correctamente"
+        })
+        setIsEditing(null)
+      } else {
+        await addDoc(collection(db, "artistas"), {
+          titulo: artistTitulo.trim(),
+          ubicacion: artistUbicacion.trim(),
+          texto: artistTexto.trim(),
+          imagen: imageUrl,
+          createdAt: new Date()
+        })
+        toast({
+          title: "Éxito",
+          description: "Artista creado correctamente"
+        })
+      }
+      
+      clearForm()
+      fetchArtists()
+    } catch (error: any) {
+      console.error("Error:", error)
+      toast({
+        title: "Error",
+        description: "No se pudo guardar el artista",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Edit handlers
+  const handleEditOpinion = (column: OpinionColumn) => {
     setTitulo(column.titulo)
     setDescripcion(column.descripcion)
     setImageUrls(column.images || [])
@@ -234,16 +377,24 @@ export default function Dashboard() {
     setIsEditing(column.id)
   }
 
-  const handleDelete = async (id: string) => {
+  const handleEditArtist = (artist: Artist) => {
+    setArtistTitulo(artist.titulo)
+    setArtistUbicacion(artist.ubicacion)
+    setArtistTexto(artist.texto)
+    setArtistImageUrl(artist.imagen)
+    setSelectedArtistImage(null)
+    setIsEditing(artist.id)
+  }
+
+  // Delete handlers
+  const handleDeleteOpinion = async (id: string) => {
     if (!confirm("¿Estás seguro de que quieres eliminar esta columna de opinión?")) {
       return
     }
 
     try {
-      // Obtener la columna para eliminar las imágenes
       const column = columns.find(col => col.id === id)
       if (column && column.images && column.images.length > 0) {
-        // Eliminar imágenes del storage
         for (const imageUrl of column.images) {
           try {
             const imageRef = ref(storage, imageUrl)
@@ -270,14 +421,45 @@ export default function Dashboard() {
     }
   }
 
+  const handleDeleteArtist = async (id: string) => {
+    if (!confirm("¿Estás seguro de que quieres eliminar este artista?")) {
+      return
+    }
+
+    try {
+      const artist = artists.find(art => art.id === id)
+      if (artist && artist.imagen) {
+        try {
+          const imageRef = ref(storage, artist.imagen)
+          await deleteObject(imageRef)
+        } catch (error) {
+          console.error("Error deleting image:", error)
+        }
+      }
+
+      await deleteDoc(doc(db, "artistas", id))
+      toast({
+        title: "Éxito",
+        description: "Artista eliminado correctamente"
+      })
+      fetchArtists()
+    } catch (error) {
+      console.error("Error deleting artist:", error)
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar el artista",
+        variant: "destructive"
+      })
+    }
+  }
+
+  // Cancel handlers
   const handleCancel = () => {
-    setTitulo("")
-    setDescripcion("")
-    setSelectedImages([])
-    setImageUrls([])
+    clearForm()
     setIsEditing(null)
   }
 
+  // Utility functions
   const removeImage = (index: number) => {
     setImageUrls(prev => prev.filter((_, i) => i !== index))
   }
@@ -286,7 +468,7 @@ export default function Dashboard() {
     setSelectedImages(prev => prev.filter((_, i) => i !== index))
   }
 
-  // Mostrar loading mientras verifica autenticación
+  // Loading state
   if (isAuthChecking) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -298,7 +480,6 @@ export default function Dashboard() {
     )
   }
 
-  // Si no hay usuario autenticado, no mostrar nada (ya se redirige)
   if (!user) {
     return null
   }
@@ -313,7 +494,7 @@ export default function Dashboard() {
               <span className="bg-gradient-hero bg-clip-text text-transparent">Dashboard</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl font-light animate-scale-in text-black px-2">
-              Gestiona las columnas de opinión y suscripciones
+              Gestiona las columnas de opinión, artistas y suscripciones
             </p>
           </div>
         </div>
@@ -323,12 +504,17 @@ export default function Dashboard() {
       <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6">
           {/* Navigation Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <Card 
+              className={`border-none shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+                contentType === 'opinion' ? 'bg-blue-50 border-2 border-blue-200' : 'bg-white'
+              }`}
+              onClick={() => handleContentTypeChange('opinion')}
+            >
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="p-2 sm:p-3 bg-blue-100 rounded-lg flex-shrink-0">
-                    <Edit className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                    <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base sm:text-lg font-semibold">Columnas de Opinión</h3>
@@ -340,12 +526,33 @@ export default function Dashboard() {
               </CardContent>
             </Card>
             
+            <Card 
+              className={`border-none shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+                contentType === 'artists' ? 'bg-green-50 border-2 border-green-200' : 'bg-white'
+              }`}
+              onClick={() => handleContentTypeChange('artists')}
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="p-2 sm:p-3 bg-green-100 rounded-lg flex-shrink-0">
+                    <Palette className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold">Artistas</h3>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      Gestiona los artistas del sitio web
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
             <Link to="/suscripciones" className="block">
               <Card className="border-none bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="p-2 sm:p-3 bg-green-100 rounded-lg flex-shrink-0">
-                      <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                    <div className="p-2 sm:p-3 bg-purple-100 rounded-lg flex-shrink-0">
+                      <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-base sm:text-lg font-semibold">Suscripciones</h3>
@@ -365,223 +572,438 @@ export default function Dashboard() {
             <Card className="border-none bg-white shadow-lg">
               <CardHeader className="pb-4 sm:pb-6">
                 <CardTitle className="text-xl sm:text-2xl font-bold">
-                  {isEditing ? "Editar Columna" : "Nueva Columna de Opinión"}
+                  {contentType === 'opinion' 
+                    ? (isEditing ? "Editar Columna" : "Nueva Columna de Opinión")
+                    : (isEditing ? "Editar Artista" : "Nuevo Artista")
+                  }
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 sm:p-6">
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="titulo" className="text-sm font-medium">Título</Label>
-                    <Input
-                      id="titulo"
-                      value={titulo}
-                      onChange={(e) => setTitulo(e.target.value)}
-                      placeholder="Ingresa el título de la columna"
-                      className="h-10 sm:h-11"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="descripcion" className="text-sm font-medium">Descripción</Label>
-                    <Textarea
-                      id="descripcion"
-                      value={descripcion}
-                      onChange={(e) => setDescripcion(e.target.value)}
-                      placeholder="Ingresa la descripción de la columna"
-                      rows={4}
-                      className="min-h-[100px] sm:min-h-[120px]"
-                      required
-                    />
-                  </div>
-
-                  {/* Image Upload Section */}
-                  <div className="space-y-3">
-                    <Label className="text-sm font-medium flex items-center gap-2">
-                      <ImageIcon className="h-4 w-4" />
-                      Imágenes (0-3 máximo)
-                    </Label>
-                    
-                    {/* File Input */}
-                    <div className="flex items-center gap-3">
+                {contentType === 'opinion' ? (
+                  // Opinion Form
+                  <form onSubmit={handleOpinionSubmit} className="space-y-4 sm:space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="titulo" className="text-sm font-medium">Título</Label>
                       <Input
-                        id="images"
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={handleImageSelect}
-                        className="flex-1"
-                        disabled={selectedImages.length >= 3}
+                        id="titulo"
+                        value={titulo}
+                        onChange={(e) => setTitulo(e.target.value)}
+                        placeholder="Ingresa el título de la columna"
+                        className="h-10 sm:h-11"
+                        required
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => document.getElementById('images')?.click()}
-                        disabled={selectedImages.length >= 3}
-                        className="flex items-center gap-2"
-                      >
-                        <Upload className="h-4 w-4" />
-                        Seleccionar
-                      </Button>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="descripcion" className="text-sm font-medium">Descripción</Label>
+                      <Textarea
+                        id="descripcion"
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
+                        placeholder="Ingresa la descripción de la columna"
+                        rows={4}
+                        className="min-h-[100px] sm:min-h-[120px]"
+                        required
+                      />
                     </div>
 
-                    {/* Selected Images Preview */}
-                    {selectedImages.length > 0 && (
-                      <div className="space-y-2">
-                        <p className="text-xs text-muted-foreground">
-                          Imágenes seleccionadas ({selectedImages.length}/3):
-                        </p>
-                        <div className="flex gap-2 flex-wrap">
-                          {selectedImages.map((file, index) => (
-                            <div key={index} className="relative group">
-                              <img
-                                src={URL.createObjectURL(file)}
-                                alt={`Preview ${index + 1}`}
-                                className="w-16 h-16 object-cover rounded border"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => removeSelectedImage(index)}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
-                        </div>
+                    {/* Image Upload Section */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-medium flex items-center gap-2">
+                        <ImageIcon className="h-4 w-4" />
+                        Imágenes (0-3 máximo)
+                      </Label>
+                      
+                      <div className="flex items-center gap-3">
+                        <Input
+                          id="images"
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="flex-1"
+                          disabled={selectedImages.length >= 3}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => document.getElementById('images')?.click()}
+                          disabled={selectedImages.length >= 3}
+                          className="flex items-center gap-2"
+                        >
+                          <Upload className="h-4 w-4" />
+                          Seleccionar
+                        </Button>
                       </div>
-                    )}
 
-                    {/* Existing Images (when editing) */}
-                    {isEditing && imageUrls.length > 0 && (
-                      <div className="space-y-2">
-                        <p className="text-xs text-muted-foreground">
-                          Imágenes existentes:
-                        </p>
-                        <div className="flex gap-2 flex-wrap">
-                          {imageUrls.map((url, index) => (
-                            <div key={index} className="relative group">
-                              <img
-                                src={url}
-                                alt={`Imagen existente ${index + 1}`}
-                                className="w-16 h-16 object-cover rounded border"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => removeImage(index)}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
+                      {/* Selected Images Preview */}
+                      {selectedImages.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-muted-foreground">
+                            Imágenes seleccionadas ({selectedImages.length}/3):
+                          </p>
+                          <div className="flex gap-2 flex-wrap">
+                            {selectedImages.map((file, index) => (
+                              <div key={index} className="relative group">
+                                <img
+                                  src={URL.createObjectURL(file)}
+                                  alt={`Preview ${index + 1}`}
+                                  className="w-16 h-16 object-cover rounded border"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeSelectedImage(index)}
+                                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <Button 
-                      type="submit" 
-                      disabled={isLoading}
-                      className="flex items-center gap-2 h-10 sm:h-11"
-                    >
-                      {isLoading ? (
-                        "Guardando..."
-                      ) : (
-                        <>
-                          {isEditing ? <Edit className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                          {isEditing ? "Actualizar" : "Guardar"}
-                        </>
                       )}
-                    </Button>
+
+                      {/* Existing Images (when editing) */}
+                      {isEditing && imageUrls.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-muted-foreground">
+                            Imágenes existentes:
+                          </p>
+                          <div className="flex gap-2 flex-wrap">
+                            {imageUrls.map((url, index) => (
+                              <div key={index} className="relative group">
+                                <img
+                                  src={url}
+                                  alt={`Imagen existente ${index + 1}`}
+                                  className="w-16 h-16 object-cover rounded border"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeImage(index)}
+                                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     
-                    {isEditing && (
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <Button 
-                        type="button" 
-                        variant="outline"
-                        onClick={handleCancel}
+                        type="submit" 
+                        disabled={isLoading}
                         className="flex items-center gap-2 h-10 sm:h-11"
                       >
-                        <X className="h-4 w-4" />
-                        Cancelar
+                        {isLoading ? (
+                          "Guardando..."
+                        ) : (
+                          <>
+                            {isEditing ? <Edit className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                            {isEditing ? "Actualizar" : "Guardar"}
+                          </>
+                        )}
                       </Button>
-                    )}
-                  </div>
-                </form>
+                      
+                      {isEditing && (
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          onClick={handleCancel}
+                          className="flex items-center gap-2 h-10 sm:h-11"
+                        >
+                          <X className="h-4 w-4" />
+                          Cancelar
+                        </Button>
+                      )}
+                    </div>
+                  </form>
+                ) : (
+                  // Artist Form
+                  <form onSubmit={handleArtistSubmit} className="space-y-4 sm:space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="artistTitulo" className="text-sm font-medium">Título</Label>
+                      <Input
+                        id="artistTitulo"
+                        value={artistTitulo}
+                        onChange={(e) => setArtistTitulo(e.target.value)}
+                        placeholder="Ingresa el nombre del artista"
+                        className="h-10 sm:h-11"
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="artistUbicacion" className="text-sm font-medium">Ubicación</Label>
+                      <Input
+                        id="artistUbicacion"
+                        value={artistUbicacion}
+                        onChange={(e) => setArtistUbicacion(e.target.value)}
+                        placeholder="Ingresa la ubicación del artista"
+                        className="h-10 sm:h-11"
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="artistTexto" className="text-sm font-medium">Texto</Label>
+                      <Textarea
+                        id="artistTexto"
+                        value={artistTexto}
+                        onChange={(e) => setArtistTexto(e.target.value)}
+                        placeholder="Ingresa la descripción del artista"
+                        rows={4}
+                        className="min-h-[100px] sm:min-h-[120px]"
+                        required
+                      />
+                    </div>
+
+                    {/* Artist Image Upload Section */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-medium flex items-center gap-2">
+                        <ImageIcon className="h-4 w-4" />
+                        Imagen del Artista <span className="text-red-500">*</span>
+                      </Label>
+                      
+                      <div className="flex items-center gap-3">
+                        <Input
+                          id="artistImage"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleArtistImageSelect}
+                          className="flex-1"
+                          required={!artistImageUrl}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => document.getElementById('artistImage')?.click()}
+                          className="flex items-center gap-2"
+                        >
+                          <Upload className="h-4 w-4" />
+                          Seleccionar
+                        </Button>
+                      </div>
+
+                      {/* Selected Image Preview */}
+                      {selectedArtistImage && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-muted-foreground">
+                            Imagen seleccionada:
+                          </p>
+                          <div className="relative group">
+                            <img
+                              src={URL.createObjectURL(selectedArtistImage)}
+                              alt="Preview"
+                              className="w-32 h-32 object-cover rounded border"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setSelectedArtistImage(null)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Existing Image (when editing) */}
+                      {isEditing && artistImageUrl && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-muted-foreground">
+                            Imagen existente:
+                          </p>
+                          <div className="relative group">
+                            <img
+                              src={artistImageUrl}
+                              alt="Imagen existente"
+                              className="w-32 h-32 object-cover rounded border"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <Button 
+                        type="submit" 
+                        disabled={isLoading}
+                        className="flex items-center gap-2 h-10 sm:h-11"
+                      >
+                        {isLoading ? (
+                          "Guardando..."
+                        ) : (
+                          <>
+                            {isEditing ? <Edit className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                            {isEditing ? "Actualizar" : "Guardar"}
+                          </>
+                        )}
+                      </Button>
+                      
+                      {isEditing && (
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          onClick={handleCancel}
+                          className="flex items-center gap-2 h-10 sm:h-11"
+                        >
+                          <X className="h-4 w-4" />
+                          Cancelar
+                        </Button>
+                      )}
+                    </div>
+                  </form>
+                )}
               </CardContent>
             </Card>
 
-            {/* Columns List */}
+            {/* Content List */}
             <Card className="border-none bg-white shadow-lg">
               <CardHeader className="pb-4 sm:pb-6">
                 <CardTitle className="text-xl sm:text-2xl font-bold">
-                  Columnas Existentes ({columns.length})
+                  {contentType === 'opinion' 
+                    ? `Columnas Existentes (${columns.length})`
+                    : `Artistas Existentes (${artists.length})`
+                  }
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 sm:p-6">
                 <div className="space-y-3 sm:space-y-4">
-                  {columns.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8 text-sm sm:text-base">
-                      No hay columnas de opinión creadas aún
-                    </p>
-                  ) : (
-                    columns.map((column, index) => (
-                      <div 
-                        key={column.id} 
-                        className="p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                                #{index + 1}
-                              </span>
-                              <h3 className="font-semibold text-base sm:text-lg truncate">{column.titulo}</h3>
-                            </div>
-                            <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-2">
-                              {column.descripcion}
-                            </p>
-                            
-                            {/* Show images count */}
-                            {column.images && column.images.length > 0 && (
+                  {contentType === 'opinion' ? (
+                    // Opinion Columns List
+                    columns.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-8 text-sm sm:text-base">
+                        No hay columnas de opinión creadas aún
+                      </p>
+                    ) : (
+                      columns.map((column, index) => (
+                        <div 
+                          key={column.id} 
+                          className="p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                            <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-2">
-                                <ImageIcon className="h-3 w-3 text-muted-foreground" />
-                                <span className="text-xs text-muted-foreground">
-                                  {column.images.length} imagen{column.images.length !== 1 ? 'es' : ''}
+                                <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                                  #{index + 1}
                                 </span>
+                                <h3 className="font-semibold text-base sm:text-lg truncate">{column.titulo}</h3>
                               </div>
-                            )}
+                              <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-2">
+                                {column.descripcion}
+                              </p>
+                              
+                              {/* Show images count */}
+                              {column.images && column.images.length > 0 && (
+                                <div className="flex items-center gap-2 mb-2">
+                                  <ImageIcon className="h-3 w-3 text-muted-foreground" />
+                                  <span className="text-xs text-muted-foreground">
+                                    {column.images.length} imagen{column.images.length !== 1 ? 'es' : ''}
+                                  </span>
+                                </div>
+                              )}
+                              
+                              <p className="text-xs text-muted-foreground">
+                                Creada: {column.createdAt.toLocaleDateString()}
+                              </p>
+                            </div>
                             
-                            <p className="text-xs text-muted-foreground">
-                              Creada: {column.createdAt.toLocaleDateString()}
-                            </p>
-                          </div>
-                          
-                          <div className="flex gap-2 sm:ml-4 flex-shrink-0">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleEdit(column)}
-                              className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
-                            >
-                              <Edit className="h-3 w-3" />
-                              <span className="hidden sm:inline">Editar</span>
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleDelete(column.id)}
-                              className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
-                            >
-                              <Trash2 className="h-3 w-3" />
-                              <span className="hidden sm:inline">Eliminar</span>
-                            </Button>
+                            <div className="flex gap-2 sm:ml-4 flex-shrink-0">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleEditOpinion(column)}
+                                className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
+                              >
+                                <Edit className="h-3 w-3" />
+                                <span className="hidden sm:inline">Editar</span>
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeleteOpinion(column.id)}
+                                className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                                <span className="hidden sm:inline">Eliminar</span>
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
+                      ))
+                    )
+                  ) : (
+                    // Artists List
+                    artists.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-8 text-sm sm:text-base">
+                        No hay artistas creados aún
+                      </p>
+                    ) : (
+                      artists.map((artist, index) => (
+                        <div 
+                          key={artist.id} 
+                          className="p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                                  #{index + 1}
+                                </span>
+                                <h3 className="font-semibold text-base sm:text-lg truncate">{artist.titulo}</h3>
+                              </div>
+                              <div className="flex items-center gap-2 mb-2">
+                                <MapPin className="h-3 w-3 text-muted-foreground" />
+                                <span className="text-xs text-muted-foreground">{artist.ubicacion}</span>
+                              </div>
+                              <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-2">
+                                {artist.texto}
+                              </p>
+                              
+                              {/* Show image indicator */}
+                              {artist.imagen && (
+                                <div className="flex items-center gap-2 mb-2">
+                                  <ImageIcon className="h-3 w-3 text-muted-foreground" />
+                                  <span className="text-xs text-muted-foreground">
+                                    Imagen disponible
+                                  </span>
+                                </div>
+                              )}
+                              
+                              <p className="text-xs text-muted-foreground">
+                                Creado: {artist.createdAt.toLocaleDateString()}
+                              </p>
+                            </div>
+                            
+                            <div className="flex gap-2 sm:ml-4 flex-shrink-0">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleEditArtist(artist)}
+                                className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
+                              >
+                                <Edit className="h-3 w-3" />
+                                <span className="hidden sm:inline">Editar</span>
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeleteArtist(artist.id)}
+                                className="flex items-center gap-1 h-8 sm:h-9 text-xs sm:text-sm"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                                <span className="hidden sm:inline">Eliminar</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )
                   )}
                 </div>
               </CardContent>
