@@ -47,7 +47,7 @@ export default function Services() {
     {
       icon: <Star className="h-12 w-12" />,
       title: "Colecciones con sentido",
-      content: <>¿Quieres iniciar o expandir tu colección de arte? Te ayudamos a encontrar de forma <strong>gratuita</strong> obras que no solo embellecen, sino que cuentan <strong>historias</strong>. Cada pieza es elegida con criterio curatorial y conexión emocional.</> 
+      content: <>¿Quieres iniciar o expandir tu colección de arte? <br /> Te ayudamos de forma <strong>gratuita</strong> a encontrar obras que no solo embellecen, sino que cuentan <strong>historias</strong>. Cada pieza es elegida con criterio curatorial y conexión emocional.</> 
     },
     {
       icon: <Award className="h-12 w-12" />,

@@ -235,7 +235,7 @@ export default function Opinion() {
                                   <img
                                     src={image}
                                     alt={`Imagen ${index + 1} de ${selectedColumn.titulo}`}
-                                    className="w-48 h-48 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 cursor-pointer hover:scale-110 shadow-md hover:shadow-lg bg-gray-50"
+                                    className="w-96 h-96 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 cursor-pointer hover:scale-110 shadow-md hover:shadow-lg bg-gray-50"
                                     onError={(e) => {
                                       // Fallback para imágenes que no cargan
                                       const target = e.target as HTMLImageElement;

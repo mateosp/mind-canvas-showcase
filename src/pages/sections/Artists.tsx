@@ -134,18 +134,7 @@ export default function Artists() {
                           <div className="p-6 hover:bg-gray-50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-3">
-                                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                                    {String(index + 1).padStart(2, '0')}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {artist.createdAt.toLocaleDateString('es-ES', {
-                                      year: 'numeric',
-                                      month: 'short',
-                                      day: 'numeric'
-                                    })}
-                                  </span>
-                                </div>
+
                                 <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">
                                   {artist.titulo}
                                 </h2>
@@ -275,21 +264,7 @@ export default function Artists() {
                           </motion.div>
                         </div>
                         
-                        {/* Publication Date - Below both columns */}
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 1.2 }}
-                          className="pt-8 border-t border-gray-200 mt-8"
-                        >
-                          <p className="text-sm text-gray-500 text-center">
-                            Publicado el {selectedArtist.createdAt.toLocaleDateString('es-ES', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
-                          </p>
-                        </motion.div>
+
                         
                         {/* Close Button */}
                         <motion.div
