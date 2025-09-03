@@ -21,6 +21,7 @@ export default function Opinion() {
   const [selectedColumn, setSelectedColumn] = useState<OpinionColumn | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showFanView, setShowFanView] = useState(true)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     fetchColumns()
@@ -48,6 +49,23 @@ export default function Opinion() {
   const handleColumnSelect = (column: OpinionColumn) => {
     setSelectedColumn(column)
     setShowFanView(false)
+    setCurrentImageIndex(0) // Reset image index when selecting new column
+  }
+
+  const handlePreviousImage = () => {
+    if (selectedColumn?.images && selectedColumn.images.length > 0) {
+      setCurrentImageIndex((prev) => 
+        prev === 0 ? selectedColumn.images.length - 1 : prev - 1
+      )
+    }
+  }
+
+  const handleNextImage = () => {
+    if (selectedColumn?.images && selectedColumn.images.length > 0) {
+      setCurrentImageIndex((prev) => 
+        prev === selectedColumn.images.length - 1 ? 0 : prev + 1
+      )
+    }
   }
 
   const handleCloseColumn = () => {
@@ -221,29 +239,99 @@ export default function Opinion() {
                           </div>
                         </motion.div>
 
-                        {/* Images Section */}
+                        {/* Images Carousel Section */}
                         {selectedColumn.images && selectedColumn.images.length > 0 && (
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.7 }}
-                            className="mt-8 space-y-4"
+                            className="mt-8"
                           >
-                            <div className="flex justify-center gap-6 flex-wrap">
-                              {selectedColumn.images.map((image, index) => (
-                                <div key={index} className="group">
+                            <div className="flex flex-col items-center gap-4">
+                              {/* Desktop Layout - Buttons on sides */}
+                              <div className="hidden md:flex justify-center items-center gap-4">
+                                {/* Previous Button */}
+                                {selectedColumn.images.length > 1 && (
+                                  <button
+                                    onClick={handlePreviousImage}
+                                    className="w-12 h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+                                  >
+                                    <ChevronLeft className="w-6 h-6" />
+                                  </button>
+                                )}
+                                
+                                {/* Current Image */}
+                                <div className="relative">
                                   <img
-                                    src={image}
-                                    alt={`Imagen ${index + 1} de ${selectedColumn.titulo}`}
-                                    className="w-96 h-96 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 cursor-pointer hover:scale-110 shadow-md hover:shadow-lg bg-gray-50"
+                                    src={selectedColumn.images[currentImageIndex]}
+                                    alt={`Imagen ${currentImageIndex + 1} de ${selectedColumn.titulo}`}
+                                    className="w-96 h-96 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 shadow-md hover:shadow-lg bg-gray-50"
                                     onError={(e) => {
-                                      // Fallback para imágenes que no cargan
                                       const target = e.target as HTMLImageElement;
                                       target.style.display = 'none';
                                     }}
                                   />
+                                  
+                                  {/* Image Counter */}
+                                  {selectedColumn.images.length > 1 && (
+                                    <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+                                      {currentImageIndex + 1} / {selectedColumn.images.length}
+                                    </div>
+                                  )}
                                 </div>
-                              ))}
+                                
+                                {/* Next Button */}
+                                {selectedColumn.images.length > 1 && (
+                                  <button
+                                    onClick={handleNextImage}
+                                    className="w-12 h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+                                  >
+                                    <ChevronRight className="w-6 h-6" />
+                                  </button>
+                                )}
+                              </div>
+
+                              {/* Mobile Layout - Image full width, buttons below */}
+                              <div className="flex md:hidden flex-col items-center gap-4 w-full">
+                                {/* Current Image - Full width on mobile */}
+                                <div className="relative w-full max-w-sm">
+                                  <img
+                                    src={selectedColumn.images[currentImageIndex]}
+                                    alt={`Imagen ${currentImageIndex + 1} de ${selectedColumn.titulo}`}
+                                    className="w-full h-80 object-contain rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 shadow-md hover:shadow-lg bg-gray-50"
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement;
+                                      target.style.display = 'none';
+                                    }}
+                                  />
+                                  
+                                  {/* Image Counter */}
+                                  {selectedColumn.images.length > 1 && (
+                                    <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+                                      {currentImageIndex + 1} / {selectedColumn.images.length}
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {/* Navigation Buttons - Below image on mobile */}
+                                {selectedColumn.images.length > 1 && (
+                                  <div className="flex justify-center items-center gap-4">
+                                    <button
+                                      onClick={handlePreviousImage}
+                                      className="w-12 h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+                                    >
+                                      <ChevronLeft className="w-6 h-6" />
+                                    </button>
+                                    
+                                    <button
+                                      onClick={handleNextImage}
+                                      className="w-12 h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+                                    >
+                                      <ChevronRight className="w-6 h-6" />
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </motion.div>
                         )}
